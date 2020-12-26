@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "contentful-typescript-codegen": "contentful-typescript-codegen --output @types/generated/contentful.d.ts"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
+    "contentful": "^8.1.5",
     "next": "10.0.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
@@ -18,6 +20,10 @@
   "devDependencies": {
     "@types/node": "^14.14.16",
     "@types/react": "^17.0.0",
+    "contentful-management": "^7.5.1",
+    "contentful-typescript-codegen": "^3.2.1",
+    "dotenv": "^8.2.0",
+    "prettier": "^2.2.1",
     "typescript": "^4.1.3"
   }
 }

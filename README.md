@@ -1,3 +1,25 @@
+# Setup
+
+Create the following env files:
+
+- `.env.local`:
+  ```
+  NEXT_PUBLIC_CONTENTFUL_SPACE_ID=[Insert space ID (not the name) here]
+  NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN=[Insert access token here]
+  ```
+- `.env.contentful-codegen`:
+  ```
+  CONTENTFUL_MANAGEMENT_TOKEN=[Insert management token (not the same as the access token) here]
+  CONTENTFUL_SPACE_ID=[Insert space ID from previous file here]
+  CONTENTFUL_ENVIRONMENT=[Insert contentful environment here, usually "master"]
+  ```
+
+Then, to generate types, run:
+```bash
+yarn contentful-typescript-codegen
+```
+
+# create-next-app default text
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started

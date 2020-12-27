@@ -45,22 +45,13 @@ function calculateSizeMetricForProjectCard(project: IProjectFields) {
         // This doesn't really need to be this accurate
         let width = 40; // rem
         let height = Math.min(width / (imageData.width / imageData.height), 18); // rem
-        /*if(height > 18) { // rem, the maximum image height
-            height = 18; // rem
-            width = (imageData.width / imageData.height) * height; // rem
-        }*/
         // Now width and height contain the correct values in rem
         // Width is correct in characters but height is not
         // 823 / 30 (27.4333...) is the number of pixels in a line
         // 16 is the number of pixels in a rem
-        console.log(width);
-        console.log(height);
-        console.log((16 / ((823 / 30)) * height));
         size += width * (16 / ((823 / 30)) * height);
     }
-
-    console.log(`Size metric for card ${project.title}: ${size}`);
-
+    
     return size;
 }
 

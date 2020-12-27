@@ -12,13 +12,6 @@ const theme = createMuiTheme({
     },
     spacing: 10,
     overrides: {
-        /*MuiCssBaseline: {
-            '@global': {
-                body: {
-                    borderRadius: "0 !important"
-                }
-            }
-        },*/
         MuiButton: {
             root: {
                 border: "1px solid white"

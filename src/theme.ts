@@ -3,7 +3,8 @@ import { createMuiTheme } from "@material-ui/core";
 
 const theme = createMuiTheme({
     palette: {
-        type: 'dark'
+        type: 'dark',
+        divider: "#ffffff"
     },
     typography: {
         fontFamily: "JetBrains Mono, monospace",

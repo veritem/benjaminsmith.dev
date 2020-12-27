@@ -1,4 +1,5 @@
 import { createClient } from 'contentful';
+import { IProjectFields } from '../@types/generated/contentful';
 
 const space = process.env.NEXT_PUBLIC_CONTENTFUL_SPACE_ID ?? "";
 const accessToken = process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN ?? "";
@@ -11,14 +12,6 @@ const client = createClient({
     accessToken: accessToken
 });
 
-export async function fetchProjects() {
-    const entries = await client.getEntries({
-        content_type: "project"
-    });
-    console.log("------ Entries ------");
-    console.log(entries);
-    console.log("------ Includes ------");
-    console.log(entries.includes.Entry);
-    console.log("------ Fields ------");
-    console.log(entries.items[0].fields);
-}
+export const fetchProjects = async () => (await client.getEntries<IProjectFields>({
+    content_type: "project"
+})).items.map(item => item.fields);

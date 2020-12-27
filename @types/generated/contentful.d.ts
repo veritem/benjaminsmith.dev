@@ -3,6 +3,46 @@
 import { Asset, Entry } from "contentful";
 import { Document } from "@contentful/rich-text-types";
 
+export interface IProfileFields {
+  /** Name */
+  name: string;
+
+  /** Tagline */
+  tagline: string;
+
+  /** GitHub URL */
+  gitHubUrl: string;
+
+  /** LinkedIn URL */
+  linkedInUrl: string;
+
+  /** Website URL */
+  websiteUrl: string;
+
+  /** Featured projects */
+  featuredProjects: IProject[];
+
+  /** Not featured projects */
+  notFeaturedProjects: IProject[];
+}
+
+export interface IProfile extends Entry<IProfileFields> {
+  sys: {
+    id: string;
+    type: string;
+    createdAt: string;
+    updatedAt: string;
+    locale: string;
+    contentType: {
+      sys: {
+        id: "profile";
+        linkType: "ContentType";
+        type: "Link";
+      };
+    };
+  };
+}
+
 export interface IProjectFields {
   /** Title */
   title: string;
@@ -24,9 +64,6 @@ export interface IProjectFields {
 
   /** Description */
   description?: string | undefined;
-
-  /** Featured */
-  featured: boolean;
 }
 
 export interface IProject extends Entry<IProjectFields> {
@@ -68,7 +105,7 @@ export interface ISkill extends Entry<ISkillFields> {
   };
 }
 
-export type CONTENT_TYPE = "project" | "skill";
+export type CONTENT_TYPE = "profile" | "project" | "skill";
 
 export type LOCALE_CODE = "en-US";
 

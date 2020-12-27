@@ -51,7 +51,7 @@ function calculateSizeMetricForProjectCard(project: IProjectFields) {
         // 16 is the number of pixels in a rem
         size += width * (16 / ((823 / 30)) * height);
     }
-    
+
     return size;
 }
 
@@ -98,8 +98,8 @@ export default function Home({ projects }: HomeProps) {
                     borderWidth="8rem"
                 >
                     {projects.map(project => (
-                        <div className={styles.projectCardContainer}>
-                            <ProjectCard key={project.title} className={styles.projectCard} project={project}/>
+                        <div key={project.title} className={styles.projectCardContainer}>
+                            <ProjectCard className={styles.projectCard} project={project}/>
                         </div>
                     ))}
                 </Masonry>

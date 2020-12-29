@@ -1,0 +1,10 @@
+query Profile {
+    keyValuePairCollection(where: {
+        key_in: ["Name", "Tagline", "GitHub URL", "LinkedIn URL", "Website URL"]
+    }) {
+        items {
+            key,
+            value
+        }
+    }
+}

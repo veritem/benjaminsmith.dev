@@ -6,23 +6,28 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "contentful-typescript-codegen": "contentful-typescript-codegen --output @types/generated/contentful.d.ts"
+    "gql-codegen": "dotenv -e .env.contentful-codegen -- cross-var fix-contentful-schema --output graphql.schema.json --token %CONTENTFUL_CONTENT_TOKEN% --management %CONTENTFUL_MANAGEMENT_TOKEN% --space %CONTENTFUL_SPACE_ID% && graphql-codegen --config codegen.yml"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.6",
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
-    "contentful": "^8.1.5",
+    "graphql": "^15.4.0",
     "next": "10.0.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "typeface-jetbrains-mono": "^2.0.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "1.20.0",
+    "@graphql-codegen/typescript": "1.19.0",
+    "@graphql-codegen/typescript-operations": "1.17.13",
+    "@graphql-codegen/typescript-react-apollo": "2.2.1",
     "@types/node": "^14.14.16",
     "@types/react": "^17.0.0",
-    "contentful-management": "^7.5.1",
-    "contentful-typescript-codegen": "^3.2.1",
-    "dotenv": "^8.2.0",
+    "cross-var": "^1.1.0",
+    "dotenv-cli": "^4.0.0",
+    "fix-contentful-schema": "./fix-contentful-schema",
     "prettier": "^2.2.1",
     "typescript": "^4.1.3"
   }

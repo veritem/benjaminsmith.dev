@@ -1,0 +1,26 @@
+query ProjectPage($project: String) {
+    projectCollection(where: {
+        title: $project
+    }, limit: 1) {
+        items {
+            title,
+            url,
+            codeUrl,
+            mediaCollection {
+                items {
+                    title,
+                    url(transform: {
+                        format: WEBP
+                    })
+                }
+            },
+            tagline,
+            skillsCollection {
+                items {
+                    title
+                }
+            },
+            description
+        }
+    }
+}

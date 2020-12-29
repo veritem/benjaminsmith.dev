@@ -20,6 +20,7 @@
 *.pem
 yarn.lock
 notes
+graphql.schema.json
 
 # debug
 npm-debug.log*
@@ -35,3 +36,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# fix-contentful-schema
+fix-contentful-schema/.vscode
+fix-contentful-schema/yarn.lock
+fix-contentful-schema/build
+fix-contentful-schema/node_modules

@@ -9,14 +9,28 @@ Create the following env files:
   ```
 - `.env.contentful-codegen`:
   ```
+  CONTENTFUL_CONTENT_TOKEN=[Insert previous access token here]
   CONTENTFUL_MANAGEMENT_TOKEN=[Insert management token (not the same as the access token) here]
   CONTENTFUL_SPACE_ID=[Insert space ID from previous file here]
-  CONTENTFUL_ENVIRONMENT=[Insert contentful environment here, usually "master"]
   ```
 
-Then, to generate types, run:
+Now, build `fix-contentful-schema`:
+
 ```bash
-yarn contentful-typescript-codegen
+cd fix-contentful-schema
+yarn tsc
+cd ..
+```
+
+Then, install all of the packages in the main package:
+
+```bash
+yarn
+```
+
+Finally, update the generated types by running:
+```bash
+yarn gql-codegen
 ```
 
 # create-next-app default text

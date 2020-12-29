@@ -1,5 +1,5 @@
-import { Card, CardContent, CardHeader, CardMedia, makeStyles, Typography } from "@material-ui/core";
-import { IProjectFields } from "../@types/generated/contentful";
+import { Card, CardHeader, makeStyles } from "@material-ui/core";
+import { FeaturedProjectIndexFragment } from "../src/generated/queries";
 
 const useStyles = makeStyles((theme) => ({
     cardMedia: {
@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface ProjectCardProps {
-    project: IProjectFields,
+    project: FeaturedProjectIndexFragment,
     className: string | undefined
 }
 
@@ -18,8 +18,8 @@ export default function ProjectCard({ project, className }: ProjectCardProps) {
     return (
         <Card variant="outlined" className={className}>
             <CardHeader title={project.title} subheader={project.tagline}/>
-            {project.media?.[0] !== undefined && (
-                <img className={styles.cardMedia} src={project.media[0].fields.file.url} title={project.media[0].fields.title}/>
+            {project.mediaCollection?.items[0] && (
+                <img className={styles.cardMedia} src={project.mediaCollection.items[0].url ?? undefined} title={project.mediaCollection.items[0].title ?? undefined}/>
             )}
         </Card>
     )

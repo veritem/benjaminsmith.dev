@@ -25,6 +25,8 @@
   ],
   "exclude": [
     "node_modules",
-    "notes"
+    "notes",
+    // This file doesn't contain anything so it gives an error
+    "@types/globalTypes.ts"
   ]
 }

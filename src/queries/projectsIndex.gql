@@ -1,0 +1,44 @@
+query ProjectsIndex {
+    setOfProjectsCollection(where: {
+        id: "benjaminsmith.dev"
+    }, limit: 1) {
+        items {
+            featuredProjectsCollection {
+                items {
+                    ...FeaturedProjectIndex
+                }
+            },
+            notFeaturedProjectsCollection {
+                items {
+                    ...NotFeaturedProjectIndex
+                }
+            }
+        }
+    }
+}
+
+fragment FeaturedProjectIndex on Project {
+    title,
+    url,
+    codeUrl,
+    tagline,
+    mediaCollection(limit: 1) {
+        items {
+            title,
+            width,
+            height,
+            url(transform: {
+                format: WEBP,
+                width: 800,
+                quality: 50
+            })
+        }
+    }
+}
+
+fragment NotFeaturedProjectIndex on Project {
+    title,
+    url,
+    codeUrl,
+    tagline
+}

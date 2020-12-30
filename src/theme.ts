@@ -16,6 +16,12 @@ const theme = createMuiTheme({
             root: {
                 border: "1px solid white"
             }
+        },
+        MuiChip: {
+            root: {
+                border: "1px solid white",
+                borderRadius: 0
+            }
         }
     },
     shape: {

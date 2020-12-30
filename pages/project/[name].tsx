@@ -1,32 +1,71 @@
-import { Link, Typography } from '@material-ui/core';
-import { GetServerSideProps } from 'next';
+import { Button, Chip, Link, makeStyles, Typography } from '@material-ui/core';
+import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import { initializeApollo } from '../../src/apolloClient';
-import { ProjectPageDocument, ProjectPageQuery, ProjectPageQueryVariables, useProjectPageQuery } from '../../src/generated/queries';
+import { NameDocument, ProjectPageDocument, ProjectPageQuery, ProjectPageQueryVariables, useNameQuery, useProjectPageQuery, ProjectNamesQuery, ProjectNamesQueryVariables, ProjectNamesDocument } from '../../src/generated/queries';
 import { HomeProps } from '../index';
 import Error404 from '../404';
+import ReactMarkdown from 'react-markdown';
+import ImageGallery from '../../components/ImageGallery';
+import { useMemo } from 'react';
+import { Link as LinkIcon, GitHub } from '@material-ui/icons';
+
+interface MediaItem {
+    url: string,
+    title: string | null | undefined
+}
+
+const useStyles = makeStyles((theme) => ({
+    gallery: {
+        marginTop: "1rem"
+    },
+    linkButton: {
+        textTransform: "none",
+        paddingLeft: "calc(1rem + 4px)",
+        paddingRight: "1rem"
+    },
+    buttonsContainer: {
+        marginTop: "1rem",
+        "& > *:not(:last-child)": {
+            marginRight: "1rem"
+        }
+    }
+}));
 
 export default function Project() {
+    const styles = useStyles();
     const router = useRouter();
-    const { name } = router.query;
+    const { name: projectName } = router.query;
     
-    if(name === undefined || Array.isArray(name)) return <Error404 />;
+    if(projectName === undefined || Array.isArray(projectName)) return <Error404 />;
 
     const { data } = useProjectPageQuery({
         variables: {
-            project: name
+            project: projectName
         }
     });
     const project = data?.projectCollection?.items[0];
 
     if(!project) return <Error404 />;
 
+    const { data: nameData } = useNameQuery();
+    const name = nameData?.keyValuePairCollection?.items[0].value;
+
+    if(name === undefined) throw new Error("GraphQL Name value is undefined");
+
+    let media: MediaItem[] | undefined = useMemo(() => {
+        if(!project.mediaCollection?.items[0]) return undefined;
+        return project.mediaCollection.items
+            // TypeScript doesn't understand that this filters out null values
+            .filter(item => item !== null && (item.url ?? undefined) !== undefined) as MediaItem[];
+    }, []);
+
     return (
         <>
             <Head>
-                <title>{project.title} | Benjamin Smith</title>
+                <title>{project.title} | {name}</title>
             </Head>
             <NextLink href="/">
                 <Typography variant="h5">
@@ -35,26 +74,87 @@ export default function Project() {
                     </Link>
                 </Typography>
             </NextLink>
-            <Typography variant="h1">{project.title}</Typography>
+            <Typography variant="h2">{project.title}</Typography>
+            {project.tagline && (
+                <Typography variant="h4">{project.tagline}</Typography>
+            )}
+            {project.skillsCollection?.items[0] && (
+                <div className={styles.buttonsContainer}>
+                    {project.skillsCollection.items.map(skill => (
+                        <Chip variant="outlined" label={skill.title}/>
+                    ))}
+                </div>
+            )}
+            <div className={styles.buttonsContainer}>
+                {project.url && (
+                    <Link href={project.url}>
+                        <Button className={styles.linkButton} startIcon={<LinkIcon/>}>Project website</Button>
+                    </Link>
+                )}
+                {project.codeUrl && (
+                    <Link href={project.codeUrl}>
+                        <Button className={styles.linkButton} startIcon={<GitHub/>}>Project code</Button>
+                    </Link>
+                )}
+            </div>
+            
+            {media && (
+                <ImageGallery className={styles.gallery} srcs={media.map(item => item.url)} />
+            )}
+            {project.description && (
+                <Typography variant="body1">
+                    <ReactMarkdown>{project.description}</ReactMarkdown>
+                </Typography>
+            )}
         </>
     )
 }
 
-export const getServerSideProps: GetServerSideProps<HomeProps> = async (context) => {
+export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
     const apolloClient = initializeApollo();
 
-    if(context.query.name !== undefined && !Array.isArray(context.query.name)) {
+    if(context.params?.name !== undefined && !Array.isArray(context.params.name)) {
         await apolloClient.query<ProjectPageQuery, ProjectPageQueryVariables>({
             query: ProjectPageDocument,
             variables: {
-                project: context.query.name
+                project: context.params.name
             }
+        });
+
+        await apolloClient.query({
+            query: NameDocument
         });
     }
 
     return {
         props: {
             initialApolloState: apolloClient.cache.extract()
-        }
+        },
+        revalidate: 10
+    };
+}
+
+    // if(data.projectCollection ?? undefined === undefined) throw new Error("ProjectNames query returned an undefined projectCollection");
+
+    // if(data.projectCollection === null) throw new Error();
+    // if(data.projectCollection === undefined) throw new Error();
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const apolloClient = initializeApollo();
+    const { data } = await apolloClient.query<ProjectNamesQuery, ProjectNamesQueryVariables>({
+        query: ProjectNamesDocument
+    });
+
+    if(data.projectCollection === null || data.projectCollection === undefined) {
+        throw new Error("ProjectNames query returned an undefined projectCollection");
+    }
+
+    return {
+        paths: data.projectCollection.items.map(projectName => ({
+            params: {
+                name: projectName.title
+            }
+        })),
+        fallback: false
     };
 }

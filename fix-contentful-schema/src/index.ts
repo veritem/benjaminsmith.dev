@@ -92,17 +92,22 @@ async function run() {
         // The GraphQL type is usually the content type ID in PascalCase
         const graphqlId = camelCase(contentType.sys.id, {pascalCase: true});
         let schemaType = schema.__schema.types.filter(type => type.name === graphqlId)[0];
-        contentType.fields.filter(field => field.required).forEach(field => {
+        contentType.fields.forEach(field => {
             const fieldId = field.type === "Array" ? field.id + "Collection" : field.id;
-            let schemaField = schemaType.fields.filter(item => item.name === fieldId)[0];
-            schemaField.type = {
-                kind: "NON_NULL",
-                name: null,
-                ofType: schemaField.type
-            };
+
+            if(field.required) {
+                let schemaField = schemaType.fields.filter(item => item.name === fieldId)[0];
+                schemaField.type = {
+                    kind: "NON_NULL",
+                    name: null,
+                    ofType: schemaField.type
+                };
+            }
+
             // Array type fields also have a corresponding [TypeName][FieldName]Collection type
             if(field.type === "Array") {
                 let schemaFieldType = schema.__schema.types.filter(type => type.name === graphqlId + camelCase(fieldId, {pascalCase: true}))[0];
+                if(schemaFieldType === undefined) return;
                 let schemaFieldTypeItemsField = schemaFieldType.fields.filter(item => item.name === "items")[0];
                 /* schemaFieldTypeItemsField looks like this:
                  * {

@@ -14,7 +14,7 @@ export default function Error404() {
     return (
         <>
             <Head>
-                <title>404 - Page Not Found | Benjamin Smith</title>
+                <title>404 - Page Not Found</title>
             </Head>
             <Typography variant="h2">404 - Page Not Found</Typography>
             <NextLink href="/">

@@ -482,7 +482,7 @@ export type ProjectSkillsCollection = {
   total: Scalars['Int'];
   skip: Scalars['Int'];
   limit: Scalars['Int'];
-  items: Array<Maybe<Skill>>;
+  items: Array<Skill>;
 };
 
 /** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/skill) */
@@ -854,6 +854,20 @@ export type SkillCollection = {
   items: Array<Skill>;
 };
 
+export type NameQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NameQuery = (
+  { __typename?: 'Query' }
+  & { keyValuePairCollection?: Maybe<(
+    { __typename?: 'KeyValuePairCollection' }
+    & { items: Array<(
+      { __typename?: 'KeyValuePair' }
+      & Pick<KeyValuePair, 'value'>
+    )> }
+  )> }
+);
+
 export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -864,6 +878,20 @@ export type ProfileQuery = (
     & { items: Array<(
       { __typename?: 'KeyValuePair' }
       & Pick<KeyValuePair, 'key' | 'value'>
+    )> }
+  )> }
+);
+
+export type ProjectNamesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProjectNamesQuery = (
+  { __typename?: 'Query' }
+  & { projectCollection?: Maybe<(
+    { __typename?: 'ProjectCollection' }
+    & { items: Array<(
+      { __typename?: 'Project' }
+      & Pick<Project, 'title'>
     )> }
   )> }
 );
@@ -895,10 +923,10 @@ export type ProjectPageFragment = (
     )>> }
   )>, skillsCollection?: Maybe<(
     { __typename?: 'ProjectSkillsCollection' }
-    & { items: Array<Maybe<(
+    & { items: Array<(
       { __typename?: 'Skill' }
       & Pick<Skill, 'title'>
-    )>> }
+    )> }
   )> }
 );
 
@@ -989,6 +1017,40 @@ export const NotFeaturedProjectIndexFragmentDoc = gql`
   tagline
 }
     `;
+export const NameDocument = gql`
+    query Name {
+  keyValuePairCollection(where: {key: "Name"}) {
+    items {
+      value
+    }
+  }
+}
+    `;
+
+/**
+ * __useNameQuery__
+ *
+ * To run a query within a React component, call `useNameQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNameQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNameQuery(baseOptions?: Apollo.QueryHookOptions<NameQuery, NameQueryVariables>) {
+        return Apollo.useQuery<NameQuery, NameQueryVariables>(NameDocument, baseOptions);
+      }
+export function useNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NameQuery, NameQueryVariables>) {
+          return Apollo.useLazyQuery<NameQuery, NameQueryVariables>(NameDocument, baseOptions);
+        }
+export type NameQueryHookResult = ReturnType<typeof useNameQuery>;
+export type NameLazyQueryHookResult = ReturnType<typeof useNameLazyQuery>;
+export type NameQueryResult = Apollo.QueryResult<NameQuery, NameQueryVariables>;
 export const ProfileDocument = gql`
     query Profile {
   keyValuePairCollection(
@@ -1026,6 +1088,40 @@ export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Pr
 export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
 export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
 export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
+export const ProjectNamesDocument = gql`
+    query ProjectNames {
+  projectCollection {
+    items {
+      title
+    }
+  }
+}
+    `;
+
+/**
+ * __useProjectNamesQuery__
+ *
+ * To run a query within a React component, call `useProjectNamesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProjectNamesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProjectNamesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProjectNamesQuery(baseOptions?: Apollo.QueryHookOptions<ProjectNamesQuery, ProjectNamesQueryVariables>) {
+        return Apollo.useQuery<ProjectNamesQuery, ProjectNamesQueryVariables>(ProjectNamesDocument, baseOptions);
+      }
+export function useProjectNamesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectNamesQuery, ProjectNamesQueryVariables>) {
+          return Apollo.useLazyQuery<ProjectNamesQuery, ProjectNamesQueryVariables>(ProjectNamesDocument, baseOptions);
+        }
+export type ProjectNamesQueryHookResult = ReturnType<typeof useProjectNamesQuery>;
+export type ProjectNamesLazyQueryHookResult = ReturnType<typeof useProjectNamesLazyQuery>;
+export type ProjectNamesQueryResult = Apollo.QueryResult<ProjectNamesQuery, ProjectNamesQueryVariables>;
 export const ProjectPageDocument = gql`
     query ProjectPage($project: String) {
   projectCollection(where: {title: $project}, limit: 1) {

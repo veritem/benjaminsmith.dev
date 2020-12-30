@@ -1,0 +1,7 @@
+query ProjectNames {
+    projectCollection {
+        items {
+            title
+        }
+    }
+}

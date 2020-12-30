@@ -1,0 +1,9 @@
+query Name {
+    keyValuePairCollection(where: {
+        key: "Name"
+    }) {
+        items {
+            value
+        }
+    }
+}

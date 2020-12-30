@@ -3,24 +3,28 @@ query ProjectPage($project: String) {
         title: $project
     }, limit: 1) {
         items {
-            title,
-            url,
-            codeUrl,
-            mediaCollection {
-                items {
-                    title,
-                    url(transform: {
-                        format: WEBP
-                    })
-                }
-            },
-            tagline,
-            skillsCollection {
-                items {
-                    title
-                }
-            },
-            description
+            ...ProjectPage
         }
     }
+}
+
+fragment ProjectPage on Project {
+    title,
+    url,
+    codeUrl,
+    mediaCollection {
+        items {
+            title,
+            url(transform: {
+                format: WEBP
+            })
+        }
+    },
+    tagline,
+    skillsCollection {
+        items {
+            title
+        }
+    },
+    description
 }

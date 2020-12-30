@@ -879,21 +879,26 @@ export type ProjectPageQuery = (
     { __typename?: 'ProjectCollection' }
     & { items: Array<(
       { __typename?: 'Project' }
-      & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline' | 'description'>
-      & { mediaCollection?: Maybe<(
-        { __typename?: 'AssetCollection' }
-        & { items: Array<Maybe<(
-          { __typename?: 'Asset' }
-          & Pick<Asset, 'title' | 'url'>
-        )>> }
-      )>, skillsCollection?: Maybe<(
-        { __typename?: 'ProjectSkillsCollection' }
-        & { items: Array<Maybe<(
-          { __typename?: 'Skill' }
-          & Pick<Skill, 'title'>
-        )>> }
-      )> }
+      & ProjectPageFragment
     )> }
+  )> }
+);
+
+export type ProjectPageFragment = (
+  { __typename?: 'Project' }
+  & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline' | 'description'>
+  & { mediaCollection?: Maybe<(
+    { __typename?: 'AssetCollection' }
+    & { items: Array<Maybe<(
+      { __typename?: 'Asset' }
+      & Pick<Asset, 'title' | 'url'>
+    )>> }
+  )>, skillsCollection?: Maybe<(
+    { __typename?: 'ProjectSkillsCollection' }
+    & { items: Array<Maybe<(
+      { __typename?: 'Skill' }
+      & Pick<Skill, 'title'>
+    )>> }
   )> }
 );
 
@@ -940,6 +945,26 @@ export type NotFeaturedProjectIndexFragment = (
   & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline'>
 );
 
+export const ProjectPageFragmentDoc = gql`
+    fragment ProjectPage on Project {
+  title
+  url
+  codeUrl
+  mediaCollection {
+    items {
+      title
+      url(transform: {format: WEBP})
+    }
+  }
+  tagline
+  skillsCollection {
+    items {
+      title
+    }
+  }
+  description
+}
+    `;
 export const FeaturedProjectIndexFragmentDoc = gql`
     fragment FeaturedProjectIndex on Project {
   title
@@ -1005,26 +1030,11 @@ export const ProjectPageDocument = gql`
     query ProjectPage($project: String) {
   projectCollection(where: {title: $project}, limit: 1) {
     items {
-      title
-      url
-      codeUrl
-      mediaCollection {
-        items {
-          title
-          url(transform: {format: WEBP})
-        }
-      }
-      tagline
-      skillsCollection {
-        items {
-          title
-        }
-      }
-      description
+      ...ProjectPage
     }
   }
 }
-    `;
+    ${ProjectPageFragmentDoc}`;
 
 /**
  * __useProjectPageQuery__

@@ -2,6 +2,7 @@ import { IconButton, Link, makeStyles, Tooltip, Typography } from "@material-ui/
 import { GitHub, Link as LinkIcon, LinkedIn } from "@material-ui/icons";
 import { GetStaticProps } from "next";
 import Head from "next/head";
+import NextLink from "next/link";
 import Masonry from "../components/Masonry";
 import ProjectCard from "../components/ProjectCard";
 import { initializeApollo } from "../src/apolloClient";
@@ -13,7 +14,7 @@ interface ProfileButton {
     href: string | null | undefined
 }
 
-interface HomeProps {
+export interface HomeProps {
     initialApolloState: any
 }
 
@@ -156,7 +157,11 @@ export default function Home(props: HomeProps) {
                 >
                     {projects.featuredProjectsCollection.items.map(project => (
                         <div key={project.title} className={styles.projectCardContainer}>
-                            <ProjectCard className={styles.projectCard} project={project}/>
+                            <NextLink href={"/project/" + project.title}>
+                                <Link href={"/project/" + project.title}>
+                                    <ProjectCard className={styles.projectCard} project={project}/>
+                                </Link>
+                            </NextLink>
                         </div>
                     ))}
                 </Masonry>

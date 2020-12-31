@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "gql-codegen": "dotenv -e .env.contentful-codegen -- cross-var fix-contentful-schema --output graphql.schema.json --token %CONTENTFUL_CONTENT_TOKEN% --management %CONTENTFUL_MANAGEMENT_TOKEN% --space %CONTENTFUL_SPACE_ID% && graphql-codegen --config codegen.yml",
-    "gql-codegen-vercel": "cross-var fix-contentful-schema --output graphql.schema.json --token %CONTENTFUL_CONTENT_TOKEN% --management %CONTENTFUL_MANAGEMENT_TOKEN% --space %CONTENTFUL_SPACE_ID% && graphql-codegen --config codegen.yml"
+    "gql-codegen-vercel": "fix-contentful-schema --output graphql.schema.json --token $CONTENTFUL_CONTENT_TOKEN --management $CONTENTFUL_MANAGEMENT_TOKEN --space $CONTENTFUL_SPACE_ID && graphql-codegen --config codegen.yml"
   },
   "dependencies": {
     "@apollo/client": "^3.3.6",

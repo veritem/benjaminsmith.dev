@@ -30,10 +30,10 @@ export type Query = {
   __typename?: 'Query';
   asset?: Maybe<Asset>;
   assetCollection?: Maybe<AssetCollection>;
-  keyValuePair?: Maybe<KeyValuePair>;
-  keyValuePairCollection?: Maybe<KeyValuePairCollection>;
   setOfProjects?: Maybe<SetOfProjects>;
   setOfProjectsCollection?: Maybe<SetOfProjectsCollection>;
+  keyValuePair?: Maybe<KeyValuePair>;
+  keyValuePairCollection?: Maybe<KeyValuePairCollection>;
   project?: Maybe<Project>;
   projectCollection?: Maybe<ProjectCollection>;
   skill?: Maybe<Skill>;
@@ -58,23 +58,6 @@ export type QueryAssetCollectionArgs = {
 };
 
 
-export type QueryKeyValuePairArgs = {
-  id: Scalars['String'];
-  preview?: Maybe<Scalars['Boolean']>;
-  locale?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryKeyValuePairCollectionArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  preview?: Maybe<Scalars['Boolean']>;
-  locale?: Maybe<Scalars['String']>;
-  where?: Maybe<KeyValuePairFilter>;
-  order?: Maybe<Array<Maybe<KeyValuePairOrder>>>;
-};
-
-
 export type QuerySetOfProjectsArgs = {
   id: Scalars['String'];
   preview?: Maybe<Scalars['Boolean']>;
@@ -89,6 +72,23 @@ export type QuerySetOfProjectsCollectionArgs = {
   locale?: Maybe<Scalars['String']>;
   where?: Maybe<SetOfProjectsFilter>;
   order?: Maybe<Array<Maybe<SetOfProjectsOrder>>>;
+};
+
+
+export type QueryKeyValuePairArgs = {
+  id: Scalars['String'];
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryKeyValuePairCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  where?: Maybe<KeyValuePairFilter>;
+  order?: Maybe<Array<Maybe<KeyValuePairOrder>>>;
 };
 
 
@@ -407,7 +407,7 @@ export type SetOfProjects = Entry & {
   linkedFrom?: Maybe<SetOfProjectsLinkingCollections>;
   id?: Maybe<Scalars['String']>;
   featuredProjectsCollection: SetOfProjectsFeaturedProjectsCollection;
-  notFeaturedProjectsCollection: SetOfProjectsNotFeaturedProjectsCollection;
+  notFeaturedProjectsCollection?: Maybe<SetOfProjectsNotFeaturedProjectsCollection>;
 };
 
 
@@ -649,6 +649,34 @@ export enum AssetOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
+export type SetOfProjectsFilter = {
+  sys?: Maybe<SysFilter>;
+  id_exists?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['String']>;
+  id_not?: Maybe<Scalars['String']>;
+  id_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  id_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  id_contains?: Maybe<Scalars['String']>;
+  id_not_contains?: Maybe<Scalars['String']>;
+  featuredProjectsCollection_exists?: Maybe<Scalars['Boolean']>;
+  notFeaturedProjectsCollection_exists?: Maybe<Scalars['Boolean']>;
+  OR?: Maybe<Array<Maybe<SetOfProjectsFilter>>>;
+  AND?: Maybe<Array<Maybe<SetOfProjectsFilter>>>;
+};
+
+export enum SetOfProjectsOrder {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
 /** Used to store miscellaneous data [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/keyValuePair) */
 export type KeyValuePair = Entry & {
   __typename?: 'KeyValuePair';
@@ -731,34 +759,6 @@ export type KeyValuePairCollection = {
   limit: Scalars['Int'];
   items: Array<KeyValuePair>;
 };
-
-export type SetOfProjectsFilter = {
-  sys?: Maybe<SysFilter>;
-  id_exists?: Maybe<Scalars['Boolean']>;
-  id?: Maybe<Scalars['String']>;
-  id_not?: Maybe<Scalars['String']>;
-  id_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  id_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  id_contains?: Maybe<Scalars['String']>;
-  id_not_contains?: Maybe<Scalars['String']>;
-  featuredProjectsCollection_exists?: Maybe<Scalars['Boolean']>;
-  notFeaturedProjectsCollection_exists?: Maybe<Scalars['Boolean']>;
-  OR?: Maybe<Array<Maybe<SetOfProjectsFilter>>>;
-  AND?: Maybe<Array<Maybe<SetOfProjectsFilter>>>;
-};
-
-export enum SetOfProjectsOrder {
-  IdAsc = 'id_ASC',
-  IdDesc = 'id_DESC',
-  SysIdAsc = 'sys_id_ASC',
-  SysIdDesc = 'sys_id_DESC',
-  SysPublishedAtAsc = 'sys_publishedAt_ASC',
-  SysPublishedAtDesc = 'sys_publishedAt_DESC',
-  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
-  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
-  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
-  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
-}
 
 export type ProjectFilter = {
   sys?: Maybe<SysFilter>;
@@ -945,13 +945,13 @@ export type ProjectsIndexQuery = (
           { __typename?: 'Project' }
           & FeaturedProjectIndexFragment
         )> }
-      ), notFeaturedProjectsCollection: (
+      ), notFeaturedProjectsCollection?: Maybe<(
         { __typename?: 'SetOfProjectsNotFeaturedProjectsCollection' }
         & { items: Array<(
           { __typename?: 'Project' }
           & NotFeaturedProjectIndexFragment
         )> }
-      ) }
+      )> }
     )> }
   )> }
 );

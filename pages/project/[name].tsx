@@ -31,6 +31,14 @@ const useStyles = makeStyles((theme) => ({
         "& > *:not(:last-child)": {
             marginRight: "1rem"
         }
+    },
+    markdownContainer: {
+        "& a": {
+            color: theme.palette.primary.main,
+            "&:hover": {
+                textDecoration: "underline"
+            }
+        }
     }
 }));
 
@@ -81,7 +89,7 @@ export default function Project() {
             {project.skillsCollection?.items[0] && (
                 <div className={styles.buttonsContainer}>
                     {project.skillsCollection.items.map(skill => (
-                        <Chip variant="outlined" label={skill.title}/>
+                        <Chip key={skill.title} variant="outlined" label={skill.title}/>
                     ))}
                 </div>
             )}
@@ -102,7 +110,7 @@ export default function Project() {
                 <ImageGallery className={styles.gallery} srcs={media.map(item => item.url)} />
             )}
             {project.description && (
-                <Typography variant="body1">
+                <Typography className={styles.markdownContainer} variant="body1" component="div">
                     <ReactMarkdown>{project.description}</ReactMarkdown>
                 </Typography>
             )}

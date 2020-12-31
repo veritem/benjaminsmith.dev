@@ -2,9 +2,9 @@ import { IconButton, Link, makeStyles, Tooltip, Typography } from "@material-ui/
 import { GitHub, Link as LinkIcon, LinkedIn } from "@material-ui/icons";
 import { GetStaticProps } from "next";
 import Head from "next/head";
-import NextLink from "next/link";
 import Masonry from "../components/Masonry";
 import ProjectCard from "../components/ProjectCard";
+import NextMuiLink from "../components/NextMuiLink";
 import { initializeApollo } from "../src/apolloClient";
 import { FeaturedProjectIndexFragment, ProfileDocument, ProfileQuery, ProjectsIndexDocument, useProfileQuery, useProjectsIndexQuery } from "../src/generated/queries";
 
@@ -43,7 +43,14 @@ const useStyles = makeStyles((theme) => ({
     projectCard: {
         display: "inline-block",
         height: "min-content",
-        margin: `${theme.spacing(3)}px ${theme.spacing(3)}px 0 0`
+        margin: `${theme.spacing(3)}px ${theme.spacing(3)}px 0 0`,
+        "& img": {
+            display: "block"
+        },
+        transition: "transform 0.3s ease-in-out",
+        "&:hover": {
+            transform: "scale(1.05)"
+        }
     },
     projectCardContainer: {
         maxWidth: "30rem"
@@ -51,6 +58,12 @@ const useStyles = makeStyles((theme) => ({
     projectsContainer: {
         // Style the div, not the Masonry element, so it works with server side rendering
         marginRight: `-${theme.spacing(3)}px`,
+    },
+    otherProjectsContainer: {
+        fontSize: "1.5rem",
+        "& a": {
+            color: "white"
+        }
     }
 }));
 
@@ -147,7 +160,7 @@ export default function Home(props: HomeProps) {
                 </Link>
             ))}
             <Typography variant="h4">Projects</Typography>
-            <Typography variant="h6">Featured</Typography>
+            {/*<Typography variant="h6">Featured</Typography>*/}
             <div className={styles.projectsContainer}>
                 <Masonry
                     maxCols={5}
@@ -157,19 +170,24 @@ export default function Home(props: HomeProps) {
                 >
                     {projects.featuredProjectsCollection.items.map(project => (
                         <div key={project.title} className={styles.projectCardContainer}>
-                            <NextLink href={"/project/" + project.title}>
-                                <Link href={"/project/" + project.title}>
-                                    <ProjectCard className={styles.projectCard} project={project}/>
-                                </Link>
-                            </NextLink>
+                            <NextMuiLink href={"/project/" + project.title}>
+                                <ProjectCard className={styles.projectCard} project={project}/>
+                            </NextMuiLink>
                         </div>
                     ))}
                 </Masonry>
             </div>
-            <Typography variant="h6">Other</Typography>
-            <ul>
-                {projects.notFeaturedProjectsCollection.items.map(project => <li key={project.title}>{project.title}</li>)}
-            </ul>
+            {projects.notFeaturedProjectsCollection && projects.notFeaturedProjectsCollection.items.length > 0 && (
+                <ul className={styles.otherProjectsContainer}>
+                    {projects.notFeaturedProjectsCollection.items.map(project => (
+                        <li key={project.title}>
+                            <NextMuiLink href={"/project/" + project.title}>
+                                {project.title} - {project.tagline}
+                            </NextMuiLink>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

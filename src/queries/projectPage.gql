@@ -21,6 +21,7 @@ fragment ProjectPage on Project {
         }
     },
     tagline,
+    collaborators,
     skillsCollection {
         items {
             title

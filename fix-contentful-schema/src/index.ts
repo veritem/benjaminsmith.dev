@@ -98,10 +98,10 @@ async function run() {
         const graphqlId = camelCase(contentType.sys.id, {pascalCase: true});
         let schemaType = schema.__schema.types.filter(type => type.name === graphqlId)[0];
         contentType.fields.forEach(field => {
-            const fieldId = field.type === "Array" ? field.id + "Collection" : field.id;
+            const fieldId = (field.type === "Array" && field.items?.type === "Link") ? field.id + "Collection" : field.id;
+            let schemaField = schemaType.fields.filter(item => item.name === fieldId)[0];
 
             if(field.required) {
-                let schemaField = schemaType.fields.filter(item => item.name === fieldId)[0];
                 schemaField.type = {
                     kind: "NON_NULL",
                     name: null,
@@ -111,6 +111,15 @@ async function run() {
 
             // Array type fields also have a corresponding [TypeName][FieldName]Collection type
             if(field.type === "Array") {
+                if(schemaField?.type.ofType?.kind === "SCALAR") {
+                    // It is just a regular array
+                    schemaField.type.ofType = {
+                        kind: "NON_NULL",
+                        name: null,
+                        ofType: schemaField.type.ofType
+                    };
+                    return;
+                }
                 let schemaFieldType = schema.__schema.types.filter(type => type.name === graphqlId + camelCase(fieldId, {pascalCase: true}))[0];
                 if(schemaFieldType === undefined) return;
                 let schemaFieldTypeItemsField = schemaFieldType.fields.filter(item => item.name === "items")[0];

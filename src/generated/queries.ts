@@ -30,12 +30,12 @@ export type Query = {
   __typename?: 'Query';
   asset?: Maybe<Asset>;
   assetCollection?: Maybe<AssetCollection>;
+  project?: Maybe<Project>;
+  projectCollection?: Maybe<ProjectCollection>;
   setOfProjects?: Maybe<SetOfProjects>;
   setOfProjectsCollection?: Maybe<SetOfProjectsCollection>;
   keyValuePair?: Maybe<KeyValuePair>;
   keyValuePairCollection?: Maybe<KeyValuePairCollection>;
-  project?: Maybe<Project>;
-  projectCollection?: Maybe<ProjectCollection>;
   skill?: Maybe<Skill>;
   skillCollection?: Maybe<SkillCollection>;
 };
@@ -55,6 +55,23 @@ export type QueryAssetCollectionArgs = {
   locale?: Maybe<Scalars['String']>;
   where?: Maybe<AssetFilter>;
   order?: Maybe<Array<Maybe<AssetOrder>>>;
+};
+
+
+export type QueryProjectArgs = {
+  id: Scalars['String'];
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryProjectCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  where?: Maybe<ProjectFilter>;
+  order?: Maybe<Array<Maybe<ProjectOrder>>>;
 };
 
 
@@ -89,23 +106,6 @@ export type QueryKeyValuePairCollectionArgs = {
   locale?: Maybe<Scalars['String']>;
   where?: Maybe<KeyValuePairFilter>;
   order?: Maybe<Array<Maybe<KeyValuePairOrder>>>;
-};
-
-
-export type QueryProjectArgs = {
-  id: Scalars['String'];
-  preview?: Maybe<Scalars['Boolean']>;
-  locale?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryProjectCollectionArgs = {
-  skip?: Maybe<Scalars['Int']>;
-  limit?: Maybe<Scalars['Int']>;
-  preview?: Maybe<Scalars['Boolean']>;
-  locale?: Maybe<Scalars['String']>;
-  where?: Maybe<ProjectFilter>;
-  order?: Maybe<Array<Maybe<ProjectOrder>>>;
 };
 
 
@@ -312,6 +312,7 @@ export type Project = Entry & {
   codeUrl?: Maybe<Scalars['String']>;
   mediaCollection?: Maybe<AssetCollection>;
   tagline?: Maybe<Scalars['String']>;
+  collaborators?: Maybe<Array<Scalars['String']>>;
   skillsCollection?: Maybe<ProjectSkillsCollection>;
   description?: Maybe<Scalars['String']>;
 };
@@ -352,6 +353,12 @@ export type ProjectMediaCollectionArgs = {
 
 /** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/project) */
 export type ProjectTaglineArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/project) */
+export type ProjectCollaboratorsArgs = {
   locale?: Maybe<Scalars['String']>;
 };
 
@@ -649,6 +656,70 @@ export enum AssetOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
+export type ProjectFilter = {
+  sys?: Maybe<SysFilter>;
+  title_exists?: Maybe<Scalars['Boolean']>;
+  title?: Maybe<Scalars['String']>;
+  title_not?: Maybe<Scalars['String']>;
+  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_contains?: Maybe<Scalars['String']>;
+  title_not_contains?: Maybe<Scalars['String']>;
+  url_exists?: Maybe<Scalars['Boolean']>;
+  url?: Maybe<Scalars['String']>;
+  url_not?: Maybe<Scalars['String']>;
+  url_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  url_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  url_contains?: Maybe<Scalars['String']>;
+  url_not_contains?: Maybe<Scalars['String']>;
+  codeUrl_exists?: Maybe<Scalars['Boolean']>;
+  codeUrl?: Maybe<Scalars['String']>;
+  codeUrl_not?: Maybe<Scalars['String']>;
+  codeUrl_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  codeUrl_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  codeUrl_contains?: Maybe<Scalars['String']>;
+  codeUrl_not_contains?: Maybe<Scalars['String']>;
+  mediaCollection_exists?: Maybe<Scalars['Boolean']>;
+  tagline_exists?: Maybe<Scalars['Boolean']>;
+  tagline?: Maybe<Scalars['String']>;
+  tagline_not?: Maybe<Scalars['String']>;
+  tagline_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  tagline_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  tagline_contains?: Maybe<Scalars['String']>;
+  tagline_not_contains?: Maybe<Scalars['String']>;
+  collaborators_exists?: Maybe<Scalars['Boolean']>;
+  collaborators_contains_all?: Maybe<Array<Maybe<Scalars['String']>>>;
+  collaborators_contains_some?: Maybe<Array<Maybe<Scalars['String']>>>;
+  collaborators_contains_none?: Maybe<Array<Maybe<Scalars['String']>>>;
+  skillsCollection_exists?: Maybe<Scalars['Boolean']>;
+  description_exists?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  description_not?: Maybe<Scalars['String']>;
+  description_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_contains?: Maybe<Scalars['String']>;
+  description_not_contains?: Maybe<Scalars['String']>;
+  OR?: Maybe<Array<Maybe<ProjectFilter>>>;
+  AND?: Maybe<Array<Maybe<ProjectFilter>>>;
+};
+
+export enum ProjectOrder {
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
+  UrlAsc = 'url_ASC',
+  UrlDesc = 'url_DESC',
+  CodeUrlAsc = 'codeUrl_ASC',
+  CodeUrlDesc = 'codeUrl_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
 export type SetOfProjectsFilter = {
   sys?: Maybe<SysFilter>;
   id_exists?: Maybe<Scalars['Boolean']>;
@@ -760,66 +831,6 @@ export type KeyValuePairCollection = {
   items: Array<KeyValuePair>;
 };
 
-export type ProjectFilter = {
-  sys?: Maybe<SysFilter>;
-  title_exists?: Maybe<Scalars['Boolean']>;
-  title?: Maybe<Scalars['String']>;
-  title_not?: Maybe<Scalars['String']>;
-  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  title_contains?: Maybe<Scalars['String']>;
-  title_not_contains?: Maybe<Scalars['String']>;
-  url_exists?: Maybe<Scalars['Boolean']>;
-  url?: Maybe<Scalars['String']>;
-  url_not?: Maybe<Scalars['String']>;
-  url_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  url_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  url_contains?: Maybe<Scalars['String']>;
-  url_not_contains?: Maybe<Scalars['String']>;
-  codeUrl_exists?: Maybe<Scalars['Boolean']>;
-  codeUrl?: Maybe<Scalars['String']>;
-  codeUrl_not?: Maybe<Scalars['String']>;
-  codeUrl_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  codeUrl_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  codeUrl_contains?: Maybe<Scalars['String']>;
-  codeUrl_not_contains?: Maybe<Scalars['String']>;
-  mediaCollection_exists?: Maybe<Scalars['Boolean']>;
-  tagline_exists?: Maybe<Scalars['Boolean']>;
-  tagline?: Maybe<Scalars['String']>;
-  tagline_not?: Maybe<Scalars['String']>;
-  tagline_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  tagline_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  tagline_contains?: Maybe<Scalars['String']>;
-  tagline_not_contains?: Maybe<Scalars['String']>;
-  skillsCollection_exists?: Maybe<Scalars['Boolean']>;
-  description_exists?: Maybe<Scalars['Boolean']>;
-  description?: Maybe<Scalars['String']>;
-  description_not?: Maybe<Scalars['String']>;
-  description_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  description_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  description_contains?: Maybe<Scalars['String']>;
-  description_not_contains?: Maybe<Scalars['String']>;
-  OR?: Maybe<Array<Maybe<ProjectFilter>>>;
-  AND?: Maybe<Array<Maybe<ProjectFilter>>>;
-};
-
-export enum ProjectOrder {
-  TitleAsc = 'title_ASC',
-  TitleDesc = 'title_DESC',
-  UrlAsc = 'url_ASC',
-  UrlDesc = 'url_DESC',
-  CodeUrlAsc = 'codeUrl_ASC',
-  CodeUrlDesc = 'codeUrl_DESC',
-  SysIdAsc = 'sys_id_ASC',
-  SysIdDesc = 'sys_id_DESC',
-  SysPublishedAtAsc = 'sys_publishedAt_ASC',
-  SysPublishedAtDesc = 'sys_publishedAt_DESC',
-  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
-  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
-  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
-  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
-}
-
 export type SkillFilter = {
   sys?: Maybe<SysFilter>;
   title_exists?: Maybe<Scalars['Boolean']>;
@@ -914,7 +925,7 @@ export type ProjectPageQuery = (
 
 export type ProjectPageFragment = (
   { __typename?: 'Project' }
-  & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline' | 'description'>
+  & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline' | 'collaborators' | 'description'>
   & { mediaCollection?: Maybe<(
     { __typename?: 'AssetCollection' }
     & { items: Array<Maybe<(
@@ -985,6 +996,7 @@ export const ProjectPageFragmentDoc = gql`
     }
   }
   tagline
+  collaborators
   skillsCollection {
     items {
       title

@@ -10,7 +10,7 @@ import Error404 from '../404';
 import ReactMarkdown from 'react-markdown';
 import ImageGallery from '../../components/ImageGallery';
 import { useMemo } from 'react';
-import { Link as LinkIcon, GitHub } from '@material-ui/icons';
+import { Link as LinkIcon, GitHub, Group } from '@material-ui/icons';
 
 interface MediaItem {
     url: string,
@@ -32,6 +32,13 @@ const useStyles = makeStyles((theme) => ({
             marginRight: "1rem"
         }
     },
+    collaborators: {
+        marginTop: "0.5rem",
+        "& svg": {
+            verticalAlign: "bottom",
+            marginRight: "0.5rem"
+        }
+    },
     markdownContainer: {
         "& a": {
             color: theme.palette.primary.main,
@@ -41,6 +48,10 @@ const useStyles = makeStyles((theme) => ({
         }
     }
 }));
+
+const writtenList = (list: string[]) => 
+    [...list.slice(0, list.length - 1), "and " + list[list.length - 1]]
+    .join(list.length > 2 ? ", " : " ");
 
 export default function Project() {
     const styles = useStyles();
@@ -85,6 +96,9 @@ export default function Project() {
             <Typography variant="h2">{project.title}</Typography>
             {project.tagline && (
                 <Typography variant="h4">{project.tagline}</Typography>
+            )}
+            {project.collaborators && project.collaborators.length > 0 && (
+                <Typography variant="body1" className={styles.collaborators}><Group/>with {writtenList(project.collaborators)}</Typography>
             )}
             {project.skillsCollection?.items[0] && (
                 <div className={styles.buttonsContainer}>

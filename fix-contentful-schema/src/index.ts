@@ -54,6 +54,7 @@ Options
 });
 
 async function run() {
+    console.log("fix-contentful-schema");
     const codegenConfig: CodegenTypes.GenerateOptions = {
         filename: cli.flags.output,
         schema: parse(printSchema(await loadSchema(`https://graphql.contentful.com/content/v1/spaces/${cli.flags.space}`, {
@@ -79,11 +80,15 @@ async function run() {
     const schemaText = await codegen(codegenConfig);
     const schema: GraphQLSchema = JSON.parse(schemaText);
 
+    console.log("Generated schema");
+
     const contentfulClient = createContentfulClient({
         accessToken: cli.flags.management
     });
     const environment = await (await contentfulClient.getSpace(cli.flags.space)).getEnvironment(cli.flags.environment);
     const contentTypes = (await environment.getContentTypes({ limit: 1000 })).items;
+
+    console.log("Connected to Contentful");
 
     // For every Contentful type there are three GQL types: [name], [name]Collection, and [name]LinkingCollections
     // The LinkingCollection type doesn't need to be modified
@@ -163,8 +168,13 @@ async function run() {
         };
     });
 
+    console.log("Fixed schema");
+
     const newSchema = JSON.stringify(schema, null, 2);
     await fs.writeFile(cli.flags.output, newSchema, 'utf-8');
+
+    console.log(`Wrote new schema to ${cli.flags.output}`);
+    console.log("Done!");
 }
 
 run().catch(error => {

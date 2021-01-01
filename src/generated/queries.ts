@@ -30,6 +30,10 @@ export type Query = {
   __typename?: 'Query';
   asset?: Maybe<Asset>;
   assetCollection?: Maybe<AssetCollection>;
+  position?: Maybe<Position>;
+  positionCollection?: Maybe<PositionCollection>;
+  award?: Maybe<Award>;
+  awardCollection?: Maybe<AwardCollection>;
   project?: Maybe<Project>;
   projectCollection?: Maybe<ProjectCollection>;
   setOfProjects?: Maybe<SetOfProjects>;
@@ -55,6 +59,40 @@ export type QueryAssetCollectionArgs = {
   locale?: Maybe<Scalars['String']>;
   where?: Maybe<AssetFilter>;
   order?: Maybe<Array<Maybe<AssetOrder>>>;
+};
+
+
+export type QueryPositionArgs = {
+  id: Scalars['String'];
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryPositionCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  where?: Maybe<PositionFilter>;
+  order?: Maybe<Array<Maybe<PositionOrder>>>;
+};
+
+
+export type QueryAwardArgs = {
+  id: Scalars['String'];
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryAwardCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  where?: Maybe<AwardFilter>;
+  order?: Maybe<Array<Maybe<AwardOrder>>>;
 };
 
 
@@ -380,6 +418,7 @@ export type ProjectDescriptionArgs = {
 export type ProjectLinkingCollections = {
   __typename?: 'ProjectLinkingCollections';
   entryCollection?: Maybe<EntryCollection>;
+  awardCollection?: Maybe<AwardCollection>;
   setOfProjectsCollection?: Maybe<SetOfProjectsCollection>;
 };
 
@@ -392,7 +431,99 @@ export type ProjectLinkingCollectionsEntryCollectionArgs = {
 };
 
 
+export type ProjectLinkingCollectionsAwardCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
 export type ProjectLinkingCollectionsSetOfProjectsCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type AwardCollection = {
+  __typename?: 'AwardCollection';
+  total: Scalars['Int'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+  items: Array<Award>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type Award = Entry & {
+  __typename?: 'Award';
+  sys: Sys;
+  linkedFrom?: Maybe<AwardLinkingCollections>;
+  organization: Scalars['String'];
+  organizationUrl?: Maybe<Scalars['String']>;
+  award: Scalars['String'];
+  date?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  submissionUrl?: Maybe<Scalars['String']>;
+  submissionProject?: Maybe<Project>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type AwardLinkedFromArgs = {
+  allowedLocales?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type AwardOrganizationArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type AwardOrganizationUrlArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type AwardAwardArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type AwardDateArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type AwardDescriptionArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type AwardSubmissionUrlArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/award) */
+export type AwardSubmissionProjectArgs = {
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type AwardLinkingCollections = {
+  __typename?: 'AwardLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type AwardLinkingCollectionsEntryCollectionArgs = {
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   preview?: Maybe<Scalars['Boolean']>;
@@ -656,6 +787,280 @@ export enum AssetOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type Position = Entry & {
+  __typename?: 'Position';
+  sys: Sys;
+  linkedFrom?: Maybe<PositionLinkingCollections>;
+  company: Scalars['String'];
+  companyUrl?: Maybe<Scalars['String']>;
+  position: Scalars['String'];
+  startDate: Scalars['String'];
+  endDate?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  points?: Maybe<Array<Scalars['String']>>;
+};
+
+
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type PositionLinkedFromArgs = {
+  allowedLocales?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type PositionCompanyArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type PositionCompanyUrlArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type PositionPositionArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type PositionStartDateArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type PositionEndDateArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type PositionDescriptionArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
+export type PositionPointsArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type PositionLinkingCollections = {
+  __typename?: 'PositionLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type PositionLinkingCollectionsEntryCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type PositionFilter = {
+  sys?: Maybe<SysFilter>;
+  company_exists?: Maybe<Scalars['Boolean']>;
+  company?: Maybe<Scalars['String']>;
+  company_not?: Maybe<Scalars['String']>;
+  company_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  company_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  company_contains?: Maybe<Scalars['String']>;
+  company_not_contains?: Maybe<Scalars['String']>;
+  companyUrl_exists?: Maybe<Scalars['Boolean']>;
+  companyUrl?: Maybe<Scalars['String']>;
+  companyUrl_not?: Maybe<Scalars['String']>;
+  companyUrl_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  companyUrl_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  companyUrl_contains?: Maybe<Scalars['String']>;
+  companyUrl_not_contains?: Maybe<Scalars['String']>;
+  position_exists?: Maybe<Scalars['Boolean']>;
+  position?: Maybe<Scalars['String']>;
+  position_not?: Maybe<Scalars['String']>;
+  position_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  position_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  position_contains?: Maybe<Scalars['String']>;
+  position_not_contains?: Maybe<Scalars['String']>;
+  startDate_exists?: Maybe<Scalars['Boolean']>;
+  startDate?: Maybe<Scalars['String']>;
+  startDate_not?: Maybe<Scalars['String']>;
+  startDate_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  startDate_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  startDate_contains?: Maybe<Scalars['String']>;
+  startDate_not_contains?: Maybe<Scalars['String']>;
+  endDate_exists?: Maybe<Scalars['Boolean']>;
+  endDate?: Maybe<Scalars['String']>;
+  endDate_not?: Maybe<Scalars['String']>;
+  endDate_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  endDate_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  endDate_contains?: Maybe<Scalars['String']>;
+  endDate_not_contains?: Maybe<Scalars['String']>;
+  description_exists?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  description_not?: Maybe<Scalars['String']>;
+  description_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_contains?: Maybe<Scalars['String']>;
+  description_not_contains?: Maybe<Scalars['String']>;
+  points_exists?: Maybe<Scalars['Boolean']>;
+  points_contains_all?: Maybe<Array<Maybe<Scalars['String']>>>;
+  points_contains_some?: Maybe<Array<Maybe<Scalars['String']>>>;
+  points_contains_none?: Maybe<Array<Maybe<Scalars['String']>>>;
+  OR?: Maybe<Array<Maybe<PositionFilter>>>;
+  AND?: Maybe<Array<Maybe<PositionFilter>>>;
+};
+
+export enum PositionOrder {
+  CompanyAsc = 'company_ASC',
+  CompanyDesc = 'company_DESC',
+  CompanyUrlAsc = 'companyUrl_ASC',
+  CompanyUrlDesc = 'companyUrl_DESC',
+  PositionAsc = 'position_ASC',
+  PositionDesc = 'position_DESC',
+  StartDateAsc = 'startDate_ASC',
+  StartDateDesc = 'startDate_DESC',
+  EndDateAsc = 'endDate_ASC',
+  EndDateDesc = 'endDate_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export type PositionCollection = {
+  __typename?: 'PositionCollection';
+  total: Scalars['Int'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+  items: Array<Position>;
+};
+
+export type AwardFilter = {
+  submissionProject?: Maybe<CfProjectNestedFilter>;
+  sys?: Maybe<SysFilter>;
+  organization_exists?: Maybe<Scalars['Boolean']>;
+  organization?: Maybe<Scalars['String']>;
+  organization_not?: Maybe<Scalars['String']>;
+  organization_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  organization_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  organization_contains?: Maybe<Scalars['String']>;
+  organization_not_contains?: Maybe<Scalars['String']>;
+  organizationUrl_exists?: Maybe<Scalars['Boolean']>;
+  organizationUrl?: Maybe<Scalars['String']>;
+  organizationUrl_not?: Maybe<Scalars['String']>;
+  organizationUrl_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  organizationUrl_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  organizationUrl_contains?: Maybe<Scalars['String']>;
+  organizationUrl_not_contains?: Maybe<Scalars['String']>;
+  award_exists?: Maybe<Scalars['Boolean']>;
+  award?: Maybe<Scalars['String']>;
+  award_not?: Maybe<Scalars['String']>;
+  award_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  award_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  award_contains?: Maybe<Scalars['String']>;
+  award_not_contains?: Maybe<Scalars['String']>;
+  date_exists?: Maybe<Scalars['Boolean']>;
+  date?: Maybe<Scalars['String']>;
+  date_not?: Maybe<Scalars['String']>;
+  date_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  date_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  date_contains?: Maybe<Scalars['String']>;
+  date_not_contains?: Maybe<Scalars['String']>;
+  description_exists?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  description_not?: Maybe<Scalars['String']>;
+  description_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_contains?: Maybe<Scalars['String']>;
+  description_not_contains?: Maybe<Scalars['String']>;
+  submissionUrl_exists?: Maybe<Scalars['Boolean']>;
+  submissionUrl?: Maybe<Scalars['String']>;
+  submissionUrl_not?: Maybe<Scalars['String']>;
+  submissionUrl_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  submissionUrl_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  submissionUrl_contains?: Maybe<Scalars['String']>;
+  submissionUrl_not_contains?: Maybe<Scalars['String']>;
+  submissionProject_exists?: Maybe<Scalars['Boolean']>;
+  OR?: Maybe<Array<Maybe<AwardFilter>>>;
+  AND?: Maybe<Array<Maybe<AwardFilter>>>;
+};
+
+export type CfProjectNestedFilter = {
+  sys?: Maybe<SysFilter>;
+  title_exists?: Maybe<Scalars['Boolean']>;
+  title?: Maybe<Scalars['String']>;
+  title_not?: Maybe<Scalars['String']>;
+  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_contains?: Maybe<Scalars['String']>;
+  title_not_contains?: Maybe<Scalars['String']>;
+  url_exists?: Maybe<Scalars['Boolean']>;
+  url?: Maybe<Scalars['String']>;
+  url_not?: Maybe<Scalars['String']>;
+  url_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  url_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  url_contains?: Maybe<Scalars['String']>;
+  url_not_contains?: Maybe<Scalars['String']>;
+  codeUrl_exists?: Maybe<Scalars['Boolean']>;
+  codeUrl?: Maybe<Scalars['String']>;
+  codeUrl_not?: Maybe<Scalars['String']>;
+  codeUrl_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  codeUrl_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  codeUrl_contains?: Maybe<Scalars['String']>;
+  codeUrl_not_contains?: Maybe<Scalars['String']>;
+  mediaCollection_exists?: Maybe<Scalars['Boolean']>;
+  tagline_exists?: Maybe<Scalars['Boolean']>;
+  tagline?: Maybe<Scalars['String']>;
+  tagline_not?: Maybe<Scalars['String']>;
+  tagline_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  tagline_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  tagline_contains?: Maybe<Scalars['String']>;
+  tagline_not_contains?: Maybe<Scalars['String']>;
+  collaborators_exists?: Maybe<Scalars['Boolean']>;
+  collaborators_contains_all?: Maybe<Array<Maybe<Scalars['String']>>>;
+  collaborators_contains_some?: Maybe<Array<Maybe<Scalars['String']>>>;
+  collaborators_contains_none?: Maybe<Array<Maybe<Scalars['String']>>>;
+  skillsCollection_exists?: Maybe<Scalars['Boolean']>;
+  description_exists?: Maybe<Scalars['Boolean']>;
+  description?: Maybe<Scalars['String']>;
+  description_not?: Maybe<Scalars['String']>;
+  description_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  description_contains?: Maybe<Scalars['String']>;
+  description_not_contains?: Maybe<Scalars['String']>;
+  OR?: Maybe<Array<Maybe<CfProjectNestedFilter>>>;
+  AND?: Maybe<Array<Maybe<CfProjectNestedFilter>>>;
+};
+
+export enum AwardOrder {
+  OrganizationAsc = 'organization_ASC',
+  OrganizationDesc = 'organization_DESC',
+  OrganizationUrlAsc = 'organizationUrl_ASC',
+  OrganizationUrlDesc = 'organizationUrl_DESC',
+  AwardAsc = 'award_ASC',
+  AwardDesc = 'award_DESC',
+  DateAsc = 'date_ASC',
+  DateDesc = 'date_DESC',
+  SubmissionUrlAsc = 'submissionUrl_ASC',
+  SubmissionUrlDesc = 'submissionUrl_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
 export type ProjectFilter = {
   sys?: Maybe<SysFilter>;
   title_exists?: Maybe<Scalars['Boolean']>;
@@ -865,6 +1270,86 @@ export type SkillCollection = {
   items: Array<Skill>;
 };
 
+export type IndexDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IndexDataQuery = (
+  { __typename?: 'Query' }
+  & { keyValuePairCollection?: Maybe<(
+    { __typename?: 'KeyValuePairCollection' }
+    & { items: Array<(
+      { __typename?: 'KeyValuePair' }
+      & KeyValuePairDataFragment
+    )> }
+  )>, setOfProjectsCollection?: Maybe<(
+    { __typename?: 'SetOfProjectsCollection' }
+    & { items: Array<(
+      { __typename?: 'SetOfProjects' }
+      & { featuredProjectsCollection: (
+        { __typename?: 'SetOfProjectsFeaturedProjectsCollection' }
+        & { items: Array<(
+          { __typename?: 'Project' }
+          & FeaturedProjectIndexFragment
+        )> }
+      ), notFeaturedProjectsCollection?: Maybe<(
+        { __typename?: 'SetOfProjectsNotFeaturedProjectsCollection' }
+        & { items: Array<(
+          { __typename?: 'Project' }
+          & NotFeaturedProjectIndexFragment
+        )> }
+      )> }
+    )> }
+  )>, positionCollection?: Maybe<(
+    { __typename?: 'PositionCollection' }
+    & { items: Array<(
+      { __typename?: 'Position' }
+      & PositionIndexFragment
+    )> }
+  )>, awardCollection?: Maybe<(
+    { __typename?: 'AwardCollection' }
+    & { items: Array<(
+      { __typename?: 'Award' }
+      & AwardIndexFragment
+    )> }
+  )> }
+);
+
+export type KeyValuePairDataFragment = (
+  { __typename?: 'KeyValuePair' }
+  & Pick<KeyValuePair, 'key' | 'value'>
+);
+
+export type PositionIndexFragment = (
+  { __typename?: 'Position' }
+  & Pick<Position, 'company' | 'companyUrl' | 'position' | 'startDate' | 'endDate' | 'description' | 'points'>
+);
+
+export type AwardIndexFragment = (
+  { __typename?: 'Award' }
+  & Pick<Award, 'organization' | 'organizationUrl' | 'award' | 'date' | 'description' | 'submissionUrl'>
+  & { submissionProject?: Maybe<(
+    { __typename?: 'Project' }
+    & Pick<Project, 'title'>
+  )> }
+);
+
+export type FeaturedProjectIndexFragment = (
+  { __typename?: 'Project' }
+  & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline'>
+  & { mediaCollection?: Maybe<(
+    { __typename?: 'AssetCollection' }
+    & { items: Array<Maybe<(
+      { __typename?: 'Asset' }
+      & Pick<Asset, 'title' | 'width' | 'height' | 'url'>
+    )>> }
+  )> }
+);
+
+export type NotFeaturedProjectIndexFragment = (
+  { __typename?: 'Project' }
+  & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline'>
+);
+
 export type NameQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -875,20 +1360,6 @@ export type NameQuery = (
     & { items: Array<(
       { __typename?: 'KeyValuePair' }
       & Pick<KeyValuePair, 'value'>
-    )> }
-  )> }
-);
-
-export type ProfileQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ProfileQuery = (
-  { __typename?: 'Query' }
-  & { keyValuePairCollection?: Maybe<(
-    { __typename?: 'KeyValuePairCollection' }
-    & { items: Array<(
-      { __typename?: 'KeyValuePair' }
-      & Pick<KeyValuePair, 'key' | 'value'>
     )> }
   )> }
 );
@@ -941,68 +1412,34 @@ export type ProjectPageFragment = (
   )> }
 );
 
-export type ProjectsIndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ProjectsIndexQuery = (
-  { __typename?: 'Query' }
-  & { setOfProjectsCollection?: Maybe<(
-    { __typename?: 'SetOfProjectsCollection' }
-    & { items: Array<(
-      { __typename?: 'SetOfProjects' }
-      & { featuredProjectsCollection: (
-        { __typename?: 'SetOfProjectsFeaturedProjectsCollection' }
-        & { items: Array<(
-          { __typename?: 'Project' }
-          & FeaturedProjectIndexFragment
-        )> }
-      ), notFeaturedProjectsCollection?: Maybe<(
-        { __typename?: 'SetOfProjectsNotFeaturedProjectsCollection' }
-        & { items: Array<(
-          { __typename?: 'Project' }
-          & NotFeaturedProjectIndexFragment
-        )> }
-      )> }
-    )> }
-  )> }
-);
-
-export type FeaturedProjectIndexFragment = (
-  { __typename?: 'Project' }
-  & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline'>
-  & { mediaCollection?: Maybe<(
-    { __typename?: 'AssetCollection' }
-    & { items: Array<Maybe<(
-      { __typename?: 'Asset' }
-      & Pick<Asset, 'title' | 'width' | 'height' | 'url'>
-    )>> }
-  )> }
-);
-
-export type NotFeaturedProjectIndexFragment = (
-  { __typename?: 'Project' }
-  & Pick<Project, 'title' | 'url' | 'codeUrl' | 'tagline'>
-);
-
-export const ProjectPageFragmentDoc = gql`
-    fragment ProjectPage on Project {
-  title
-  url
-  codeUrl
-  mediaCollection {
-    items {
-      title
-      url(transform: {format: WEBP})
-    }
-  }
-  tagline
-  collaborators
-  skillsCollection {
-    items {
-      title
-    }
-  }
+export const KeyValuePairDataFragmentDoc = gql`
+    fragment KeyValuePairData on KeyValuePair {
+  key
+  value
+}
+    `;
+export const PositionIndexFragmentDoc = gql`
+    fragment PositionIndex on Position {
+  company
+  companyUrl
+  position
+  startDate
+  endDate
   description
+  points
+}
+    `;
+export const AwardIndexFragmentDoc = gql`
+    fragment AwardIndex on Award {
+  organization
+  organizationUrl
+  award
+  date
+  description
+  submissionUrl
+  submissionProject {
+    title
+  }
 }
     `;
 export const FeaturedProjectIndexFragmentDoc = gql`
@@ -1029,6 +1466,91 @@ export const NotFeaturedProjectIndexFragmentDoc = gql`
   tagline
 }
     `;
+export const ProjectPageFragmentDoc = gql`
+    fragment ProjectPage on Project {
+  title
+  url
+  codeUrl
+  mediaCollection {
+    items {
+      title
+      url(transform: {format: WEBP})
+    }
+  }
+  tagline
+  collaborators
+  skillsCollection {
+    items {
+      title
+    }
+  }
+  description
+}
+    `;
+export const IndexDataDocument = gql`
+    query IndexData {
+  keyValuePairCollection(
+    where: {key_in: ["Name", "Tagline", "GitHub URL", "LinkedIn URL", "Website URL"]}
+  ) {
+    items {
+      ...KeyValuePairData
+    }
+  }
+  setOfProjectsCollection(where: {id: "benjaminsmith.dev"}, limit: 1) {
+    items {
+      featuredProjectsCollection {
+        items {
+          ...FeaturedProjectIndex
+        }
+      }
+      notFeaturedProjectsCollection {
+        items {
+          ...NotFeaturedProjectIndex
+        }
+      }
+    }
+  }
+  positionCollection {
+    items {
+      ...PositionIndex
+    }
+  }
+  awardCollection {
+    items {
+      ...AwardIndex
+    }
+  }
+}
+    ${KeyValuePairDataFragmentDoc}
+${FeaturedProjectIndexFragmentDoc}
+${NotFeaturedProjectIndexFragmentDoc}
+${PositionIndexFragmentDoc}
+${AwardIndexFragmentDoc}`;
+
+/**
+ * __useIndexDataQuery__
+ *
+ * To run a query within a React component, call `useIndexDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIndexDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIndexDataQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIndexDataQuery(baseOptions?: Apollo.QueryHookOptions<IndexDataQuery, IndexDataQueryVariables>) {
+        return Apollo.useQuery<IndexDataQuery, IndexDataQueryVariables>(IndexDataDocument, baseOptions);
+      }
+export function useIndexDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IndexDataQuery, IndexDataQueryVariables>) {
+          return Apollo.useLazyQuery<IndexDataQuery, IndexDataQueryVariables>(IndexDataDocument, baseOptions);
+        }
+export type IndexDataQueryHookResult = ReturnType<typeof useIndexDataQuery>;
+export type IndexDataLazyQueryHookResult = ReturnType<typeof useIndexDataLazyQuery>;
+export type IndexDataQueryResult = Apollo.QueryResult<IndexDataQuery, IndexDataQueryVariables>;
 export const NameDocument = gql`
     query Name {
   keyValuePairCollection(where: {key: "Name"}) {
@@ -1063,43 +1585,6 @@ export function useNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NameQ
 export type NameQueryHookResult = ReturnType<typeof useNameQuery>;
 export type NameLazyQueryHookResult = ReturnType<typeof useNameLazyQuery>;
 export type NameQueryResult = Apollo.QueryResult<NameQuery, NameQueryVariables>;
-export const ProfileDocument = gql`
-    query Profile {
-  keyValuePairCollection(
-    where: {key_in: ["Name", "Tagline", "GitHub URL", "LinkedIn URL", "Website URL"]}
-  ) {
-    items {
-      key
-      value
-    }
-  }
-}
-    `;
-
-/**
- * __useProfileQuery__
- *
- * To run a query within a React component, call `useProfileQuery` and pass it any options that fit your needs.
- * When your component renders, `useProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProfileQuery({
- *   variables: {
- *   },
- * });
- */
-export function useProfileQuery(baseOptions?: Apollo.QueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-        return Apollo.useQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, baseOptions);
-      }
-export function useProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProfileQuery, ProfileQueryVariables>) {
-          return Apollo.useLazyQuery<ProfileQuery, ProfileQueryVariables>(ProfileDocument, baseOptions);
-        }
-export type ProfileQueryHookResult = ReturnType<typeof useProfileQuery>;
-export type ProfileLazyQueryHookResult = ReturnType<typeof useProfileLazyQuery>;
-export type ProfileQueryResult = Apollo.QueryResult<ProfileQuery, ProfileQueryVariables>;
 export const ProjectNamesDocument = gql`
     query ProjectNames {
   projectCollection {
@@ -1169,47 +1654,3 @@ export function useProjectPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ProjectPageQueryHookResult = ReturnType<typeof useProjectPageQuery>;
 export type ProjectPageLazyQueryHookResult = ReturnType<typeof useProjectPageLazyQuery>;
 export type ProjectPageQueryResult = Apollo.QueryResult<ProjectPageQuery, ProjectPageQueryVariables>;
-export const ProjectsIndexDocument = gql`
-    query ProjectsIndex {
-  setOfProjectsCollection(where: {id: "benjaminsmith.dev"}, limit: 1) {
-    items {
-      featuredProjectsCollection {
-        items {
-          ...FeaturedProjectIndex
-        }
-      }
-      notFeaturedProjectsCollection {
-        items {
-          ...NotFeaturedProjectIndex
-        }
-      }
-    }
-  }
-}
-    ${FeaturedProjectIndexFragmentDoc}
-${NotFeaturedProjectIndexFragmentDoc}`;
-
-/**
- * __useProjectsIndexQuery__
- *
- * To run a query within a React component, call `useProjectsIndexQuery` and pass it any options that fit your needs.
- * When your component renders, `useProjectsIndexQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProjectsIndexQuery({
- *   variables: {
- *   },
- * });
- */
-export function useProjectsIndexQuery(baseOptions?: Apollo.QueryHookOptions<ProjectsIndexQuery, ProjectsIndexQueryVariables>) {
-        return Apollo.useQuery<ProjectsIndexQuery, ProjectsIndexQueryVariables>(ProjectsIndexDocument, baseOptions);
-      }
-export function useProjectsIndexLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProjectsIndexQuery, ProjectsIndexQueryVariables>) {
-          return Apollo.useLazyQuery<ProjectsIndexQuery, ProjectsIndexQueryVariables>(ProjectsIndexDocument, baseOptions);
-        }
-export type ProjectsIndexQueryHookResult = ReturnType<typeof useProjectsIndexQuery>;
-export type ProjectsIndexLazyQueryHookResult = ReturnType<typeof useProjectsIndexLazyQuery>;
-export type ProjectsIndexQueryResult = Apollo.QueryResult<ProjectsIndexQuery, ProjectsIndexQueryVariables>;

@@ -1,4 +1,11 @@
-query ProjectsIndex {
+query IndexData {
+    keyValuePairCollection(where: {
+        key_in: ["Name", "Tagline", "GitHub URL", "LinkedIn URL", "Website URL"]
+    }) {
+        items {
+            ...KeyValuePairData
+        }
+    },
     setOfProjectsCollection(where: {
         id: "benjaminsmith.dev"
     }, limit: 1) {
@@ -14,6 +21,43 @@ query ProjectsIndex {
                 }
             }
         }
+    },
+    positionCollection {
+        items {
+            ...PositionIndex
+        }
+    },
+    awardCollection {
+        items {
+            ...AwardIndex
+        }
+    }
+}
+
+fragment KeyValuePairData on KeyValuePair {
+    key,
+    value
+}
+
+fragment PositionIndex on Position {
+    company,
+    companyUrl,
+    position,
+    startDate,
+    endDate,
+    description,
+    points
+}
+
+fragment AwardIndex on Award {
+    organization,
+    organizationUrl,
+    award,
+    date,
+    description,
+    submissionUrl,
+    submissionProject {
+        title
     }
 }
 

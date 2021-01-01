@@ -62,7 +62,7 @@ export default function Project() {
 
     const { data } = useProjectPageQuery({
         variables: {
-            project: projectName
+            project: decodeURIComponent(projectName)
         }
     });
     const project = data?.projectCollection?.items[0];
@@ -174,7 +174,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return {
         paths: data.projectCollection.items.map(projectName => ({
             params: {
-                name: projectName.title
+                name: encodeURIComponent(projectName.title)
             }
         })),
         fallback: false

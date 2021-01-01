@@ -9,6 +9,7 @@ import { initializeApollo } from "../src/apolloClient";
 import { FeaturedProjectIndexFragment, IndexDataDocument, useIndexDataQuery, KeyValuePairDataFragment } from "../src/generated/queries";
 import { useMemo, useState } from "react";
 import PositionCard from "../components/PositionCard";
+import AwardCard from "../components/AwardCard";
 
 interface ProfileButton {
     hoverText: string,
@@ -107,6 +108,10 @@ const useStyles = makeStyles((theme) => ({
         "& .MuiAccordionSummary-content": {
             margin: "12px 0"
         }
+    },
+    awardCard: {
+        maxWidth: "45rem",
+        marginTop: "1rem"
     }
 }));
 
@@ -169,6 +174,10 @@ function parseStringDate(date: string) {
     }
 }
 
+function sortItemsByDate<T>(items: T[], getDateProperty: {(item: T): string}) {
+    return items.slice().sort((a, b) => +parseStringDate(getDateProperty(b)) - +parseStringDate(getDateProperty(a)));
+}
+
 export default function Home(props: HomeProps) {
     const styles = useStyles();
     const { data: indexData } = useIndexDataQuery();
@@ -201,6 +210,14 @@ export default function Home(props: HomeProps) {
 
     // Slice is to copy the array so positionCollection isn't mutated
     const sortedPositions = useMemo(() => positionCollection.items.slice().sort((a, b) => +parseStringDate(b.startDate) - +parseStringDate(a.startDate)), []);
+
+    const awards = indexData.awardCollection?.items;
+
+    if(awards === undefined || awards === null) {
+        throw new Error("AwardCollection from GraphQL query is undefined");
+    }
+
+    const sortedAwards = useMemo(() => sortItemsByDate(awards, (award => award.date ?? "2000")), []);
 
     const profileButtons: ProfileButton[] = [
         {
@@ -285,7 +302,11 @@ export default function Home(props: HomeProps) {
                     ))}
                 </ul>
             )}
-        </div>
+            <Typography variant="h4">Awards</Typography>
+            {sortedAwards.map(award => (
+                <AwardCard className={styles.awardCard} award={award}/>
+            ))}
+        </div>        
     );
 }
 

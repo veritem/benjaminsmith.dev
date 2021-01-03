@@ -263,7 +263,7 @@ export default function Home(props: HomeProps) {
                         <PositionCard position={sortedPositions[0]} showPoints={additionalPanelsExpanded}/>
                         <Accordion className={styles.accordionToggle} onChange={(_, expanded) => setAdditionalPanelsExpanded(expanded)}>
                             <AccordionSummary expandIcon={<ExpandMore/>}>
-                                <Typography>View more...</Typography>
+                                <Typography>{additionalPanelsExpanded ? "Show less..." : "View more..."}</Typography>
                             </AccordionSummary>
                         </Accordion>
                     </AccordionDetails>

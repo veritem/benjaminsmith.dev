@@ -112,6 +112,9 @@ const useStyles = makeStyles((theme) => ({
     awardCard: {
         maxWidth: "45rem",
         marginTop: "1rem"
+    },
+    awardHeader: {
+        marginTop: "1rem"
     }
 }));
 
@@ -302,9 +305,12 @@ export default function Home(props: HomeProps) {
                     ))}
                 </ul>
             )}
-            <Typography variant="h4">Awards</Typography>
+            {/* Adding the className prop directly to the Typography element breaks CSS SSR for some reason */}
+            <div className={styles.awardHeader}>
+                <Typography variant="h4">Awards</Typography>
+            </div>
             {sortedAwards.map(award => (
-                <AwardCard className={styles.awardCard} award={award}/>
+                <AwardCard key={award.award + award.organization} className={styles.awardCard} award={award}/>
             ))}
         </div>        
     );

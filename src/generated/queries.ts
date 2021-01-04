@@ -1519,6 +1519,37 @@ export type SkillCollection = {
   items: Array<Skill>;
 };
 
+export type AnnouncementsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AnnouncementsQuery = (
+  { __typename?: 'Query' }
+  & { setOfAnnouncementsCollection?: Maybe<(
+    { __typename?: 'SetOfAnnouncementsCollection' }
+    & { items: Array<(
+      { __typename?: 'SetOfAnnouncements' }
+      & { featuredAnnouncementsCollection?: Maybe<(
+        { __typename?: 'SetOfAnnouncementsFeaturedAnnouncementsCollection' }
+        & { items: Array<(
+          { __typename?: 'Announcement' }
+          & AnnouncementPageFragment
+        )> }
+      )>, notFeaturedAnnouncementsCollection?: Maybe<(
+        { __typename?: 'SetOfAnnouncementsNotFeaturedAnnouncementsCollection' }
+        & { items: Array<(
+          { __typename?: 'Announcement' }
+          & AnnouncementPageFragment
+        )> }
+      )> }
+    )> }
+  )> }
+);
+
+export type AnnouncementPageFragment = (
+  { __typename?: 'Announcement' }
+  & Pick<Announcement, 'title' | 'information' | 'date'>
+);
+
 export type IndexDataQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1678,6 +1709,13 @@ export type ProjectPageFragment = (
   )> }
 );
 
+export const AnnouncementPageFragmentDoc = gql`
+    fragment AnnouncementPage on Announcement {
+  title
+  information
+  date
+}
+    `;
 export const KeyValuePairDataFragmentDoc = gql`
     fragment KeyValuePairData on KeyValuePair {
   key
@@ -1760,6 +1798,49 @@ export const ProjectPageFragmentDoc = gql`
   description
 }
     `;
+export const AnnouncementsDocument = gql`
+    query Announcements {
+  setOfAnnouncementsCollection(where: {id: "benjaminsmith.dev"}, limit: 1) {
+    items {
+      featuredAnnouncementsCollection {
+        items {
+          ...AnnouncementPage
+        }
+      }
+      notFeaturedAnnouncementsCollection {
+        items {
+          ...AnnouncementPage
+        }
+      }
+    }
+  }
+}
+    ${AnnouncementPageFragmentDoc}`;
+
+/**
+ * __useAnnouncementsQuery__
+ *
+ * To run a query within a React component, call `useAnnouncementsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAnnouncementsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAnnouncementsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAnnouncementsQuery(baseOptions?: Apollo.QueryHookOptions<AnnouncementsQuery, AnnouncementsQueryVariables>) {
+        return Apollo.useQuery<AnnouncementsQuery, AnnouncementsQueryVariables>(AnnouncementsDocument, baseOptions);
+      }
+export function useAnnouncementsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AnnouncementsQuery, AnnouncementsQueryVariables>) {
+          return Apollo.useLazyQuery<AnnouncementsQuery, AnnouncementsQueryVariables>(AnnouncementsDocument, baseOptions);
+        }
+export type AnnouncementsQueryHookResult = ReturnType<typeof useAnnouncementsQuery>;
+export type AnnouncementsLazyQueryHookResult = ReturnType<typeof useAnnouncementsLazyQuery>;
+export type AnnouncementsQueryResult = Apollo.QueryResult<AnnouncementsQuery, AnnouncementsQueryVariables>;
 export const IndexDataDocument = gql`
     query IndexData {
   keyValuePairCollection(

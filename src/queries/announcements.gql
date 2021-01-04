@@ -1,0 +1,24 @@
+query Announcements {
+    setOfAnnouncementsCollection(where: {
+        id: "benjaminsmith.dev"
+    }, limit: 1) {
+        items {
+            featuredAnnouncementsCollection {
+                items {
+                    ...AnnouncementPage
+                }
+            },
+            notFeaturedAnnouncementsCollection {
+                items {
+                    ...AnnouncementPage
+                }
+            }
+        }
+    }
+}
+
+fragment AnnouncementPage on Announcement {
+    title,
+    information,
+    date
+}

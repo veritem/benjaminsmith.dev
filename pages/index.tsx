@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, IconButton, Link, makeStyles, Tooltip, Typography } from "@material-ui/core";
+import { Accordion, AccordionDetails, AccordionSummary, IconButton, Link, makeStyles, Tooltip, Typography, Card, CardContent } from "@material-ui/core";
 import { ExpandMore, GitHub, Link as LinkIcon, LinkedIn } from "@material-ui/icons";
 import { GetStaticProps } from "next";
 import Head from "next/head";
@@ -116,6 +116,23 @@ const useStyles = makeStyles((theme) => ({
     },
     awardHeader: {
         marginTop: "1rem"
+    },
+    announcementCardContainer: {
+        margin: "1rem 0"
+    },
+    announcementCard: {
+        margin: "0 -8rem",
+        border: 0,
+        backgroundColor: theme.palette.primary.dark,
+        "& a": {
+            color: theme.palette.primary.light
+        },
+        "&:not(:first-child)": {
+            borderTop: "1px solid " + theme.palette.primary.light
+        }
+    },
+    announcementViewMore: {
+        paddingBottom: "1rem !important"
     }
 }));
 
@@ -263,7 +280,18 @@ export default function Home(props: HomeProps) {
                     </Tooltip>
                 </Link>
             ))}
-            {announcements.length > 0 && announcements.map(announcement => <AnnouncementCard key={announcement.information} announcement={announcement}/>)}
+            {announcements.length > 0 && (
+                <div className={styles.announcementCardContainer}>
+                    {announcements.map(announcement => (
+                        <AnnouncementCard className={styles.announcementCard} key={announcement.information} announcement={announcement}/>
+                    ))}
+                    <Card className={styles.announcementCard} variant="outlined">
+                        <CardContent className={styles.announcementViewMore}>
+                            <NextMuiLink href="/announcements">View more announcements...</NextMuiLink>
+                        </CardContent>
+                    </Card>
+                </div>
+            )}
             <Typography variant="h4">Work</Typography>
             <div className={styles.positionPanelContainer}>
                 <Accordion className={styles.positionPanel} variant="outlined">

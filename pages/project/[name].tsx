@@ -12,6 +12,7 @@ import ImageGallery from '../../components/ImageGallery';
 import { useMemo } from 'react';
 import { Link as LinkIcon, GitHub, Group } from '@material-ui/icons';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
+import BackLink from '../../components/BackLink';
 
 interface MediaItem {
     url: string,
@@ -79,13 +80,7 @@ export default function Project() {
             <Head>
                 <title>{project.title} | {name}</title>
             </Head>
-            <NextLink href="/">
-                <Typography variant="h5">
-                    <Link href="/">
-                        Go back to home page
-                    </Link>
-                </Typography>
-            </NextLink>
+            <BackLink/>
             <Typography variant="h2">{project.title}</Typography>
             {project.tagline && (
                 <Typography variant="h4">{project.tagline}</Typography>

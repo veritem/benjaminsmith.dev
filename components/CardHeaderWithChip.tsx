@@ -1,10 +1,12 @@
 import { makeStyles, Typography, Chip } from "@material-ui/core";
 import { CalendarToday } from "@material-ui/icons";
+import { Variant } from "@material-ui/core/styles/createTypography";
 
 interface CardHeaderWithChipProps {
     title: string | React.ReactNode,
     subheader?: string | React.ReactNode,
-    chip?: React.ReactNode
+    chip?: React.ReactNode,
+    headerVariant?: Variant
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +38,7 @@ export default function CardHeaderWithChip(props: CardHeaderWithChipProps) {
     return (
         <div className={styles.cardHeader}>
             <div>
-                <Typography variant="h5">{props.title}</Typography>
+                <Typography variant={props.headerVariant ?? "h5"}>{props.title}</Typography>
                 {props.subheader && (
                     <Typography className={styles.subheader} variant="body1">{props.subheader}</Typography>
                 )}

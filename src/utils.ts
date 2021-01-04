@@ -1,0 +1,1 @@
+export const formatAdditionalClassName = (name: string | undefined) => (name !== undefined ? (" " + name) : "");

@@ -1,5 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import { useEffect, useMemo, useState } from "react";
+import { formatAdditionalClassName } from "../src/utils";
 
 const useStyles = makeStyles((theme) => ({
     masonryContainer: {
@@ -154,7 +155,7 @@ export default function Masonry(props: MasonryProps) {
     const styles = useStyles();
 
     return (
-        <div className={styles.masonryContainer + (props.className !== undefined ? (" " + props.className) : "")}>
+        <div className={styles.masonryContainer + formatAdditionalClassName(props.className)}>
             {columnMaps[cols - 1].map((column, index) => (
                 <div key={index}>
                     {column.map(childIndex => props.children[childIndex])}

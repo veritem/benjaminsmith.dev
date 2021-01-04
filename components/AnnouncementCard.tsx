@@ -2,12 +2,18 @@ import { FeaturedAnnouncementIndexFragment } from "../src/generated/queries";
 import { makeStyles, Card, CardContent } from "@material-ui/core";
 import CardHeaderWithChip, { DateChip } from "./CardHeaderWithChip";
 import MarkdownRenderer from "./MarkdownRenderer";
+import { formatAdditionalClassName } from "../src/utils";
 
-/*const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
     card: {
-        
+        "& p": {
+            marginBottom: "0"
+        }
+    },
+    cardContent: {
+        paddingBottom: "1rem !important"
     }
-}));*/
+}));
 
 interface AnnouncementCardProps {
     announcement: FeaturedAnnouncementIndexFragment,
@@ -15,15 +21,17 @@ interface AnnouncementCardProps {
 }
 
 export function AnnouncementCard({ announcement, className }: AnnouncementCardProps) {
+    const styles = useStyles();
     return (
-        <Card variant="outlined">
-            <CardContent>
+        <Card className={styles.card + formatAdditionalClassName(className)} variant="outlined">
+            <CardContent className={styles.cardContent}>
                 <CardHeaderWithChip
                     title={announcement.title ?? "Announcement"}
                     chip={DateChip({date: announcement.date})}
+                    headerVariant="h6"
                 />
                 {announcement.information && (
-                    <MarkdownRenderer text={announcement.information}/>
+                    <MarkdownRenderer variant="body2" text={announcement.information}/>
                 )}
             </CardContent>
         </Card>

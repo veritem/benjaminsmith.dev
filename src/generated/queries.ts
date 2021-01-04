@@ -30,6 +30,10 @@ export type Query = {
   __typename?: 'Query';
   asset?: Maybe<Asset>;
   assetCollection?: Maybe<AssetCollection>;
+  setOfAnnouncements?: Maybe<SetOfAnnouncements>;
+  setOfAnnouncementsCollection?: Maybe<SetOfAnnouncementsCollection>;
+  announcement?: Maybe<Announcement>;
+  announcementCollection?: Maybe<AnnouncementCollection>;
   position?: Maybe<Position>;
   positionCollection?: Maybe<PositionCollection>;
   award?: Maybe<Award>;
@@ -59,6 +63,40 @@ export type QueryAssetCollectionArgs = {
   locale?: Maybe<Scalars['String']>;
   where?: Maybe<AssetFilter>;
   order?: Maybe<Array<Maybe<AssetOrder>>>;
+};
+
+
+export type QuerySetOfAnnouncementsArgs = {
+  id: Scalars['String'];
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QuerySetOfAnnouncementsCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  where?: Maybe<SetOfAnnouncementsFilter>;
+  order?: Maybe<Array<Maybe<SetOfAnnouncementsOrder>>>;
+};
+
+
+export type QueryAnnouncementArgs = {
+  id: Scalars['String'];
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryAnnouncementCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+  where?: Maybe<AnnouncementFilter>;
+  order?: Maybe<Array<Maybe<AnnouncementOrder>>>;
 };
 
 
@@ -787,6 +825,217 @@ export enum AssetOrder {
   SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
 }
 
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/setOfAnnouncements) */
+export type SetOfAnnouncements = Entry & {
+  __typename?: 'SetOfAnnouncements';
+  sys: Sys;
+  linkedFrom?: Maybe<SetOfAnnouncementsLinkingCollections>;
+  id: Scalars['String'];
+  featuredAnnouncementsCollection?: Maybe<SetOfAnnouncementsFeaturedAnnouncementsCollection>;
+  notFeaturedAnnouncementsCollection?: Maybe<SetOfAnnouncementsNotFeaturedAnnouncementsCollection>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/setOfAnnouncements) */
+export type SetOfAnnouncementsLinkedFromArgs = {
+  allowedLocales?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/setOfAnnouncements) */
+export type SetOfAnnouncementsIdArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/setOfAnnouncements) */
+export type SetOfAnnouncementsFeaturedAnnouncementsCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/setOfAnnouncements) */
+export type SetOfAnnouncementsNotFeaturedAnnouncementsCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type SetOfAnnouncementsLinkingCollections = {
+  __typename?: 'SetOfAnnouncementsLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+};
+
+
+export type SetOfAnnouncementsLinkingCollectionsEntryCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type SetOfAnnouncementsFeaturedAnnouncementsCollection = {
+  __typename?: 'SetOfAnnouncementsFeaturedAnnouncementsCollection';
+  total: Scalars['Int'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+  items: Array<Announcement>;
+};
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/announcement) */
+export type Announcement = Entry & {
+  __typename?: 'Announcement';
+  sys: Sys;
+  linkedFrom?: Maybe<AnnouncementLinkingCollections>;
+  title?: Maybe<Scalars['String']>;
+  information?: Maybe<Scalars['String']>;
+  date?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/announcement) */
+export type AnnouncementLinkedFromArgs = {
+  allowedLocales?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/announcement) */
+export type AnnouncementTitleArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/announcement) */
+export type AnnouncementInformationArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/announcement) */
+export type AnnouncementDateArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type AnnouncementLinkingCollections = {
+  __typename?: 'AnnouncementLinkingCollections';
+  entryCollection?: Maybe<EntryCollection>;
+  setOfAnnouncementsCollection?: Maybe<SetOfAnnouncementsCollection>;
+};
+
+
+export type AnnouncementLinkingCollectionsEntryCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+export type AnnouncementLinkingCollectionsSetOfAnnouncementsCollectionArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  limit?: Maybe<Scalars['Int']>;
+  preview?: Maybe<Scalars['Boolean']>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+export type SetOfAnnouncementsCollection = {
+  __typename?: 'SetOfAnnouncementsCollection';
+  total: Scalars['Int'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+  items: Array<SetOfAnnouncements>;
+};
+
+export type SetOfAnnouncementsNotFeaturedAnnouncementsCollection = {
+  __typename?: 'SetOfAnnouncementsNotFeaturedAnnouncementsCollection';
+  total: Scalars['Int'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+  items: Array<Announcement>;
+};
+
+export type SetOfAnnouncementsFilter = {
+  sys?: Maybe<SysFilter>;
+  id_exists?: Maybe<Scalars['Boolean']>;
+  id?: Maybe<Scalars['String']>;
+  id_not?: Maybe<Scalars['String']>;
+  id_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  id_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  id_contains?: Maybe<Scalars['String']>;
+  id_not_contains?: Maybe<Scalars['String']>;
+  featuredAnnouncementsCollection_exists?: Maybe<Scalars['Boolean']>;
+  notFeaturedAnnouncementsCollection_exists?: Maybe<Scalars['Boolean']>;
+  OR?: Maybe<Array<Maybe<SetOfAnnouncementsFilter>>>;
+  AND?: Maybe<Array<Maybe<SetOfAnnouncementsFilter>>>;
+};
+
+export enum SetOfAnnouncementsOrder {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export type AnnouncementFilter = {
+  sys?: Maybe<SysFilter>;
+  title_exists?: Maybe<Scalars['Boolean']>;
+  title?: Maybe<Scalars['String']>;
+  title_not?: Maybe<Scalars['String']>;
+  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_contains?: Maybe<Scalars['String']>;
+  title_not_contains?: Maybe<Scalars['String']>;
+  information_exists?: Maybe<Scalars['Boolean']>;
+  information?: Maybe<Scalars['String']>;
+  information_not?: Maybe<Scalars['String']>;
+  information_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  information_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  information_contains?: Maybe<Scalars['String']>;
+  information_not_contains?: Maybe<Scalars['String']>;
+  date_exists?: Maybe<Scalars['Boolean']>;
+  date?: Maybe<Scalars['String']>;
+  date_not?: Maybe<Scalars['String']>;
+  date_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  date_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  date_contains?: Maybe<Scalars['String']>;
+  date_not_contains?: Maybe<Scalars['String']>;
+  OR?: Maybe<Array<Maybe<AnnouncementFilter>>>;
+  AND?: Maybe<Array<Maybe<AnnouncementFilter>>>;
+};
+
+export enum AnnouncementOrder {
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
+  DateAsc = 'date_ASC',
+  DateDesc = 'date_DESC',
+  SysIdAsc = 'sys_id_ASC',
+  SysIdDesc = 'sys_id_DESC',
+  SysPublishedAtAsc = 'sys_publishedAt_ASC',
+  SysPublishedAtDesc = 'sys_publishedAt_DESC',
+  SysFirstPublishedAtAsc = 'sys_firstPublishedAt_ASC',
+  SysFirstPublishedAtDesc = 'sys_firstPublishedAt_DESC',
+  SysPublishedVersionAsc = 'sys_publishedVersion_ASC',
+  SysPublishedVersionDesc = 'sys_publishedVersion_DESC'
+}
+
+export type AnnouncementCollection = {
+  __typename?: 'AnnouncementCollection';
+  total: Scalars['Int'];
+  skip: Scalars['Int'];
+  limit: Scalars['Int'];
+  items: Array<Announcement>;
+};
+
 /** A work position [See type definition](https://app.contentful.com/spaces/d4vc57z4o8dm/content_types/position) */
 export type Position = Entry & {
   __typename?: 'Position';
@@ -1311,6 +1560,18 @@ export type IndexDataQuery = (
       { __typename?: 'Award' }
       & AwardIndexFragment
     )> }
+  )>, setOfAnnouncementsCollection?: Maybe<(
+    { __typename?: 'SetOfAnnouncementsCollection' }
+    & { items: Array<(
+      { __typename?: 'SetOfAnnouncements' }
+      & { featuredAnnouncementsCollection?: Maybe<(
+        { __typename?: 'SetOfAnnouncementsFeaturedAnnouncementsCollection' }
+        & { items: Array<(
+          { __typename?: 'Announcement' }
+          & FeaturedAnnouncementIndexFragment
+        )> }
+      )> }
+    )> }
   )> }
 );
 
@@ -1331,6 +1592,11 @@ export type AwardIndexFragment = (
     { __typename?: 'Project' }
     & Pick<Project, 'title'>
   )> }
+);
+
+export type FeaturedAnnouncementIndexFragment = (
+  { __typename?: 'Announcement' }
+  & Pick<Announcement, 'title' | 'information' | 'date'>
 );
 
 export type FeaturedProjectIndexFragment = (
@@ -1442,6 +1708,13 @@ export const AwardIndexFragmentDoc = gql`
   }
 }
     `;
+export const FeaturedAnnouncementIndexFragmentDoc = gql`
+    fragment FeaturedAnnouncementIndex on Announcement {
+  title
+  information
+  date
+}
+    `;
 export const FeaturedProjectIndexFragmentDoc = gql`
     fragment FeaturedProjectIndex on Project {
   title
@@ -1520,12 +1793,22 @@ export const IndexDataDocument = gql`
       ...AwardIndex
     }
   }
+  setOfAnnouncementsCollection(where: {id: "benjaminsmith.dev"}, limit: 1) {
+    items {
+      featuredAnnouncementsCollection {
+        items {
+          ...FeaturedAnnouncementIndex
+        }
+      }
+    }
+  }
 }
     ${KeyValuePairDataFragmentDoc}
 ${FeaturedProjectIndexFragmentDoc}
 ${NotFeaturedProjectIndexFragmentDoc}
 ${PositionIndexFragmentDoc}
-${AwardIndexFragmentDoc}`;
+${AwardIndexFragmentDoc}
+${FeaturedAnnouncementIndexFragmentDoc}`;
 
 /**
  * __useIndexDataQuery__

@@ -1,9 +1,10 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography, Chip } from "@material-ui/core";
+import { CalendarToday } from "@material-ui/icons";
 
 interface CardHeaderWithChipProps {
     title: string | React.ReactNode,
-    subheader: string | React.ReactNode,
-    chip: React.ReactNode
+    subheader?: string | React.ReactNode,
+    chip?: React.ReactNode
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -36,11 +37,26 @@ export default function CardHeaderWithChip(props: CardHeaderWithChipProps) {
         <div className={styles.cardHeader}>
             <div>
                 <Typography variant="h5">{props.title}</Typography>
-                <Typography className={styles.subheader} variant="body1">{props.subheader}</Typography>
+                {props.subheader && (
+                    <Typography className={styles.subheader} variant="body1">{props.subheader}</Typography>
+                )}
             </div>
-            <div className={styles.chip}>
-                {props.chip}
-            </div>
+            {props.chip && (
+                <div className={styles.chip}>
+                    {props.chip}
+                </div>
+            )}
         </div>
     );
 }
+
+export const DateChip = ({ date }: { date: string | undefined | null }) => (
+    date !== undefined &&
+    date !== null ? (
+        <Chip
+            variant="outlined"
+            icon={<CalendarToday fontSize="small"/>}
+            label={date}
+        />
+    ) : undefined
+);

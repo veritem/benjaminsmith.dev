@@ -11,6 +11,7 @@ import ReactMarkdown from 'react-markdown';
 import ImageGallery from '../../components/ImageGallery';
 import { useMemo } from 'react';
 import { Link as LinkIcon, GitHub, Group } from '@material-ui/icons';
+import MarkdownRenderer from '../../components/MarkdownRenderer';
 
 interface MediaItem {
     url: string,
@@ -37,14 +38,6 @@ const useStyles = makeStyles((theme) => ({
         "& svg": {
             verticalAlign: "bottom",
             marginRight: "0.5rem"
-        }
-    },
-    markdownContainer: {
-        "& a": {
-            color: theme.palette.primary.main,
-            "&:hover": {
-                textDecoration: "underline"
-            }
         }
     }
 }));
@@ -124,9 +117,7 @@ export default function Project() {
                 <ImageGallery className={styles.gallery} srcs={media.map(item => item.url)} />
             )}
             {project.description && (
-                <Typography className={styles.markdownContainer} variant="body1" component="div">
-                    <ReactMarkdown>{project.description}</ReactMarkdown>
-                </Typography>
+                <MarkdownRenderer text={project.description}/>
             )}
         </>
     )

@@ -14,6 +14,7 @@
     "@graphql-tools/url-loader": "^6.7.1",
     "camelcase": "^6.2.0",
     "contentful-management": "^7.5.1",
+    "graphql": "^15.4.0",
     "meow": "^8.1.0"
   },
   "devDependencies": {

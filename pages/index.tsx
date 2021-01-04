@@ -10,6 +10,7 @@ import { FeaturedProjectIndexFragment, IndexDataDocument, useIndexDataQuery, Key
 import { useMemo, useState } from "react";
 import PositionCard from "../components/PositionCard";
 import AwardCard from "../components/AwardCard";
+import { AnnouncementCard } from "../components/AnnouncementCard";
 
 interface ProfileButton {
     hoverText: string,
@@ -222,6 +223,12 @@ export default function Home(props: HomeProps) {
 
     const sortedAwards = useMemo(() => sortItemsByDate(awards, (award => award.date ?? "2000")), []);
 
+    const announcements = indexData.setOfAnnouncementsCollection?.items[0].featuredAnnouncementsCollection?.items;
+
+    if(announcements === undefined || announcements === null) {
+        throw new Error("There are no sets of announcements in Contentful, or the GraphQL query failed");
+    }
+
     const profileButtons: ProfileButton[] = [
         {
             hoverText: "GitHub",
@@ -256,6 +263,7 @@ export default function Home(props: HomeProps) {
                     </Tooltip>
                 </Link>
             ))}
+            {announcements.length > 0 && announcements.map(announcement => <AnnouncementCard key={announcement.information} announcement={announcement}/>)}
             <Typography variant="h4">Work</Typography>
             <div className={styles.positionPanelContainer}>
                 <Accordion className={styles.positionPanel} variant="outlined">

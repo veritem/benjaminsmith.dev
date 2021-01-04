@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, Chip, Collapse, Link, makeStyles, Typography } from "@material-ui/core";
 import { CalendarToday } from "@material-ui/icons";
 import { PositionIndexFragment } from "../src/generated/queries";
-import CardHeaderWithChip from "./CardHeaderWithChip";
+import CardHeaderWithChip, { DateChip } from "./CardHeaderWithChip";
 
 interface PositionCardProps {
     position: PositionIndexFragment,
@@ -41,14 +41,10 @@ export default function PositionCard({ position, showPoints, className }: Positi
             }
             subheader={position.position}
             chip={
-                <Chip
-                    variant="outlined"
-                    icon={<CalendarToday fontSize="small"/>}
-                    label={startAndEndDateFormat(
+                DateChip({date: startAndEndDateFormat(
                         position.startDate,
                         position.endDate ?? undefined
-                    )}
-                />
+                )})
             }
         />
         <Typography variant="body1">{position.description}</Typography>

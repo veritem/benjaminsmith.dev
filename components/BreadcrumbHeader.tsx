@@ -48,6 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface BreadcrumbHeaderProps {
     name: string,
+    announcementsLast: boolean,
     className?: string
 }
 
@@ -63,7 +64,7 @@ if(typeof window !== 'undefined') {
     window.TEXT_WIDTH = undefined;
 }
 
-export default function BreadcrumbHeader({ name, className }: BreadcrumbHeaderProps) {
+export default function BreadcrumbHeader({ name, announcementsLast, className }: BreadcrumbHeaderProps) {
     const trigger = useAtTopOfPage();
     const [rerenderState, rerender] = useState(false);
 
@@ -82,8 +83,14 @@ export default function BreadcrumbHeader({ name, className }: BreadcrumbHeaderPr
         window.TEXT_WIDTH = sw;
         return sw;
     }, [typeof window !== 'undefined' && window.JETBRAINSMONO_LOADED]);
-    
+
     const styles = useStyles({ trigger, nameWidth });
+
+    const announcements = (
+        <Link color="inherit" onClick={() => scrollToId("announcements")}>
+            Announcements
+        </Link>
+    );
 
     return (
         <ElevationScroll>
@@ -95,9 +102,7 @@ export default function BreadcrumbHeader({ name, className }: BreadcrumbHeaderPr
                         </Link>
                     </div>
                     <Breadcrumbs className={className} separator="|">
-                        <Link color="inherit" onClick={() => scrollToId("announcements")}>
-                            Announcements
-                        </Link>
+                        {!announcementsLast && announcements}
                         <Link color="inherit" onClick={() => scrollToId("work")}>
                             Work
                         </Link>
@@ -107,6 +112,7 @@ export default function BreadcrumbHeader({ name, className }: BreadcrumbHeaderPr
                         <Link color="inherit" onClick={() => scrollToId("awards")}>
                             Awards
                         </Link>
+                        {announcementsLast && announcements}
                     </Breadcrumbs>
                 </Toolbar>
             </AppBar>

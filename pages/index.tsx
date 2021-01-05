@@ -274,7 +274,7 @@ export default function Home(props: HomeProps) {
                 <title>{profile.name}</title>
             </Head>
             <div id="backToTopAnchor" className={styles.backToTopAnchor}/>
-            <BreadcrumbHeader name={profile.name}/>
+            <BreadcrumbHeader name={profile.name} announcementsLast={announcements.length === 0}/>
             <Typography variant="h2">{profile.name}</Typography>
             <Typography variant="h4">{profile.tagline}</Typography>
             {profileButtons.map(item => (
@@ -366,7 +366,17 @@ export default function Home(props: HomeProps) {
             {sortedAwards.map(award => (
                 <AwardCard key={award.award + award.organization} className={styles.awardCard} award={award}/>
             ))}
-        </div>        
+            {announcements.length === 0 && (
+                <>
+                    <div className={styles.awardHeader}>
+                        <div id="announcements" className={styles.scrollAnchor}/>
+                        <Typography variant="h4">Announcements</Typography>
+                    </div>
+                    <Typography variant="body1">There are no announcements at this time.</Typography>
+                    <NextMuiLink href="/announcements">View past announcements...</NextMuiLink>
+                </>
+            )}
+        </div>
     );
 }
 

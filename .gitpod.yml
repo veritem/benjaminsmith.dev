@@ -1,3 +1,3 @@
 tasks:
-  - init: cd fix-contentful-schema && yarn && yarn tsc && cd .. && yarn && yarn remove fix-contentful-schema && yarn add --dev ./fix-contentful-schema && yarn gql-codegen-vercel && yarn build
+  - init: cd fix-contentful-schema && yarn && yarn tsc && cd .. && yarn && yarn remove fix-contentful-schema && yarn add --dev ./fix-contentful-schema && yarn gql-codegen-vercel
     command: yarn dev

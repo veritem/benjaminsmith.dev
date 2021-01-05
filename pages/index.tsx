@@ -11,6 +11,7 @@ import { useMemo, useState } from "react";
 import PositionCard from "../components/PositionCard";
 import AwardCard from "../components/AwardCard";
 import { AnnouncementCard } from "../components/AnnouncementCard";
+import BreadcrumbHeader from "../components/BreadcrumbHeader";
 
 interface ProfileButton {
     hoverText: string,
@@ -133,6 +134,14 @@ const useStyles = makeStyles((theme) => ({
     },
     announcementViewMore: {
         paddingBottom: "1rem !important"
+    },
+    scrollAnchor: {
+        position: "relative",
+        top: "-4.5rem"
+    },
+    backToTopAnchor: {
+        position: "relative",
+        top: "-8rem"
     }
 }));
 
@@ -203,7 +212,7 @@ export default function Home(props: HomeProps) {
     const styles = useStyles();
     const { data: indexData } = useIndexDataQuery();
     const [additionalPanelsExpanded, setAdditionalPanelsExpanded] = useState(false);
-    
+
     if(indexData === undefined) {
         throw new Error("The IndexData GraphQL query returned undefined");
     }
@@ -256,11 +265,6 @@ export default function Home(props: HomeProps) {
             hoverText: "LinkedIn",
             icon: <LinkedIn/>,
             href: profile.linkedInUrl
-        },
-        {
-            hoverText: "Website",
-            icon: <LinkIcon/>,
-            href: profile.websiteUrl
         }
     ];
 
@@ -269,6 +273,8 @@ export default function Home(props: HomeProps) {
             <Head>
                 <title>{profile.name}</title>
             </Head>
+            <div id="backToTopAnchor" className={styles.backToTopAnchor}/>
+            <BreadcrumbHeader name={profile.name}/>
             <Typography variant="h2">{profile.name}</Typography>
             <Typography variant="h4">{profile.tagline}</Typography>
             {profileButtons.map(item => (
@@ -281,24 +287,34 @@ export default function Home(props: HomeProps) {
                 </Link>
             ))}
             {announcements.length > 0 && (
-                <div className={styles.announcementCardContainer}>
-                    {announcements.map(announcement => (
-                        <AnnouncementCard className={styles.announcementCard} key={announcement.information} announcement={announcement}/>
-                    ))}
-                    <Card className={styles.announcementCard} variant="outlined">
-                        <CardContent className={styles.announcementViewMore}>
-                            <NextMuiLink href="/announcements">View more announcements...</NextMuiLink>
-                        </CardContent>
-                    </Card>
-                </div>
+                <>
+                    <div id="announcements" className={styles.scrollAnchor}/>
+                    <div className={styles.announcementCardContainer}>
+                        {announcements.map(announcement => (
+                            <AnnouncementCard className={styles.announcementCard} key={announcement.information} announcement={announcement}/>
+                        ))}
+                        <Card className={styles.announcementCard} variant="outlined">
+                            <CardContent className={styles.announcementViewMore}>
+                                <NextMuiLink href="/announcements">View more announcements...</NextMuiLink>
+                            </CardContent>
+                        </Card>
+                    </div>
+                </>
             )}
+            <div id="work" className={styles.scrollAnchor}/>
             <Typography variant="h4">Work</Typography>
             <div className={styles.positionPanelContainer}>
                 <Accordion className={styles.positionPanel} variant="outlined">
                     <AccordionDetails>
                         <PositionCard position={sortedPositions[0]} showPoints={additionalPanelsExpanded}/>
-                        <Accordion className={styles.accordionToggle} onChange={(_, expanded) => setAdditionalPanelsExpanded(expanded)}>
-                            <AccordionSummary expandIcon={<ExpandMore/>}>
+                        <Accordion className={styles.accordionToggle} onChange={(_, expanded) => {
+                            setAdditionalPanelsExpanded(expanded);
+                        }}>
+                            <AccordionSummary expandIcon={<ExpandMore/>} onClick={() => {
+                                if (document.activeElement instanceof HTMLElement) {
+                                    document.activeElement.blur();
+                                }
+                            }}>
                                 <Typography>{additionalPanelsExpanded ? "Show less..." : "View more..."}</Typography>
                             </AccordionSummary>
                         </Accordion>
@@ -313,6 +329,7 @@ export default function Home(props: HomeProps) {
                     </Accordion>
                 ))}
             </div>
+            <div id="projects" className={styles.scrollAnchor}/>
             <Typography variant="h4">Projects</Typography>
             <div className={styles.projectsContainer}>
                 <Masonry
@@ -343,6 +360,7 @@ export default function Home(props: HomeProps) {
             )}
             {/* Adding the className prop directly to the Typography element breaks CSS SSR for some reason */}
             <div className={styles.awardHeader}>
+                <div id="awards" className={styles.scrollAnchor}/>
                 <Typography variant="h4">Awards</Typography>
             </div>
             {sortedAwards.map(award => (

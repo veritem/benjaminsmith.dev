@@ -1,5 +1,5 @@
-import { cloneElement, useMemo } from 'react';
-import { Breadcrumbs, Link, AppBar, Toolbar, makeStyles, useScrollTrigger, Slide, Typography } from "@material-ui/core";
+import { cloneElement, useMemo, useState } from 'react';
+import { Breadcrumbs, Link, AppBar, Toolbar, makeStyles, useScrollTrigger, Typography } from "@material-ui/core";
 
 export const useAtTopOfPage = () => useScrollTrigger({
     disableHysteresis: true,
@@ -29,7 +29,10 @@ const useStyles = makeStyles((theme) => ({
     },
     toolbar: {
         paddingLeft: 0,
-        paddingRight: 0
+        paddingRight: 0,
+        "& a:hover": {
+            cursor: "pointer"
+        }
     },
     nameLinkContainer: (props: { trigger: boolean, nameWidth: number | undefined }) => ({
         transition: "width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
@@ -50,26 +53,36 @@ interface BreadcrumbHeaderProps {
 
 declare global {
     interface Window {
-        JETBRAINSMONO_LOADED: boolean
+        JETBRAINSMONO_LOADED: boolean,
+        TEXT_WIDTH: number | undefined
     }
 }
 
 if(typeof window !== 'undefined') {
     window.JETBRAINSMONO_LOADED = false;
+    window.TEXT_WIDTH = undefined;
 }
 
 export default function BreadcrumbHeader({ name, className }: BreadcrumbHeaderProps) {
     const trigger = useAtTopOfPage();
+    const [rerenderState, rerender] = useState(false);
 
     if(typeof window !== 'undefined' && !window.JETBRAINSMONO_LOADED) {
         // @ts-ignore - fonts exists but TypeScript doesn't know that for some reason
-        window.JETBRAINSMONO_LOADED = document.fonts.check('1em JetBrains Mono');
+        document.fonts.load('1em JetBrains Mono').then(() => {
+            window.JETBRAINSMONO_LOADED = true;
+            rerender(!rerenderState);
+        });
     }
 
     const nameWidth = useMemo(() => {
         if(typeof window === 'undefined') return undefined;
-        return document.getElementById("nameLink")?.scrollWidth;
+        const sw = document.getElementById("nameLink")?.scrollWidth;
+        if(sw === undefined) return window.TEXT_WIDTH ?? 0;
+        window.TEXT_WIDTH = sw;
+        return sw;
     }, [typeof window !== 'undefined' && window.JETBRAINSMONO_LOADED]);
+    
     const styles = useStyles({ trigger, nameWidth });
 
     return (

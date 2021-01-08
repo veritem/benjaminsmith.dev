@@ -1,0 +1,18 @@
+--- "package copy.json"	2021-01-07 20:13:17.817720430 -0800
++++ package.json	2021-01-07 20:13:43.589583149 -0800
+@@ -17,9 +17,12 @@
+     "@material-ui/core": "^4.11.2",
+     "@material-ui/icons": "^4.11.2",
+     "graphql": "^15.4.0",
+-    "next": "10.0.4",
+-    "react": "17.0.1",
+-    "react-dom": "17.0.1",
++    "next": "^10.0.5",
++    "next-plugin-preact": "^3.0.3",
++    "preact": "^10.5.9",
++    "preact-render-to-string": "^5.1.12",
++    "react": "npm:@preact/compat",
++    "react-dom": "npm:@preact/compat",
+     "react-markdown": "^5.0.3",
+     "typeface-jetbrains-mono": "^2.0.0"
+   },

@@ -21,6 +21,7 @@
 yarn.lock
 notes
 graphql.schema.json
+package.json.orig
 
 # debug
 npm-debug.log*

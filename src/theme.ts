@@ -1,6 +1,9 @@
 import 'typeface-jetbrains-mono';
 import { createMuiTheme } from "@material-ui/core";
 
+// 61rem * 16px
+export const MARGIN_CHANGE_BREAKPOINT = 976;
+
 const theme = createMuiTheme({
     palette: {
         type: 'dark',

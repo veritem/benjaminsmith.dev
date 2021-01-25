@@ -9,6 +9,8 @@ interface CardHeaderWithChipProps {
     headerVariant?: Variant
 }
 
+const CARD_HEADER_BREAKPOINT = 650;
+
 const useStyles = makeStyles((theme) => ({
     cardHeader: {
         "& .MuiTypography-root": {
@@ -22,13 +24,19 @@ const useStyles = makeStyles((theme) => ({
         },
         marginBottom: "1rem",
         display: "flex",
+        [theme.breakpoints.down(CARD_HEADER_BREAKPOINT)]: {
+            display: "block"
+        },
         alignItems: "center"
     },
     subheader: {
         color: theme.palette.text.secondary
     },
     chip: {
-        marginLeft: "auto"
+        marginLeft: "auto",
+        [theme.breakpoints.down(CARD_HEADER_BREAKPOINT)]: {
+            marginTop: "0.5rem"
+        }
     }
 }));
 

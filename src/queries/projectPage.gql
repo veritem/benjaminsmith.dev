@@ -16,7 +16,9 @@ fragment ProjectPage on Project {
         items {
             title,
             url(transform: {
-                format: WEBP
+                format: WEBP,
+                # Maximum width
+                width: 1920
             })
         }
     },

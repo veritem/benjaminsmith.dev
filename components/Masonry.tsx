@@ -76,6 +76,7 @@ interface MasonryProps {
     colWidth: string | number,
     // Distance from the edge of the window to the side of the masonry
     borderWidth: string | number,
+    debug?: true,
     className?: string,
     children: React.ReactNodeArray
 }
@@ -158,7 +159,9 @@ export default function Masonry(props: MasonryProps) {
         <div className={styles.masonryContainer + formatAdditionalClassName(props.className)}>
             {columnMaps[cols - 1].map((column, index) => (
                 <div key={index}>
-                    {column.map(childIndex => props.children[childIndex])}
+                    {column.map(childIndex => props.debug
+                        ? <div><p>{props.sizeMetrics[childIndex]}</p>{props.children[childIndex]}</div>
+                        : props.children[childIndex])}
                 </div>
             ))}
         </div>

@@ -1,4 +1,4 @@
-import { Button, Chip, Link, makeStyles, Typography } from '@material-ui/core';
+import { Button, Chip, LinearProgress, Link, makeStyles, Typography } from '@material-ui/core';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
@@ -48,6 +48,11 @@ const writtenList = (list: string[]) =>
 export default function Project() {
     const styles = useStyles();
     const router = useRouter();
+
+    if(router.isFallback) {
+        return <LinearProgress />;
+    }
+
     const { name: projectName } = router.query;
     
     if(projectName === undefined || Array.isArray(projectName)) return <Error404 />;
@@ -161,6 +166,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
                 name: encodeURIComponent(projectName.title)
             }
         })),
-        fallback: false
+        fallback: true
     };
 }

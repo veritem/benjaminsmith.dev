@@ -1,5 +1,8 @@
-import { cloneElement, useMemo, useState } from 'react';
+import { cloneElement, useEffect, useMemo, useState } from 'react';
 import { Breadcrumbs, Link, AppBar, Toolbar, makeStyles, useScrollTrigger, Typography } from "@material-ui/core";
+import { MARGIN_CHANGE_BREAKPOINT } from '../src/theme';
+
+const TOOLBAR_BREAKPOINT = 720;
 
 export const useAtTopOfPage = () => useScrollTrigger({
     disableHysteresis: true,
@@ -25,13 +28,22 @@ const useStyles = makeStyles((theme) => ({
     appBar: {
         backgroundColor: "#1b1b1b",
         paddingLeft: "8rem",
-        paddingRight: "8rem"
+        paddingRight: "8rem",
+        [theme.breakpoints.down(MARGIN_CHANGE_BREAKPOINT)]: {
+            paddingLeft: "4rem",
+            paddingRight: "4rem"
+        }
     },
     toolbar: {
         paddingLeft: 0,
         paddingRight: 0,
         "& a:hover": {
             cursor: "pointer"
+        },
+        [theme.breakpoints.down(TOOLBAR_BREAKPOINT)]: {
+            "& *": {
+                fontSize: "1rem"
+            }
         }
     },
     nameLinkContainer: (props: { trigger: boolean, nameWidth: number | undefined }) => ({
@@ -39,7 +51,10 @@ const useStyles = makeStyles((theme) => ({
         width: props.trigger ? (props.nameWidth ?? 0) + "px" : 0,
         overflow: "hidden",
         whiteSpace: "nowrap",
-        display: "flex"
+        display: "flex",
+        [theme.breakpoints.down(TOOLBAR_BREAKPOINT)]: {
+            display: "none"
+        }
     }),
     nameLink: {
         paddingRight: "1rem"
@@ -64,9 +79,13 @@ if(typeof window !== 'undefined') {
     window.TEXT_WIDTH = undefined;
 }
 
+const HEADER_MEDIA_QUERY = `(max-width: ${TOOLBAR_BREAKPOINT}px)`;
+
 export default function BreadcrumbHeader({ name, announcementsLast, className }: BreadcrumbHeaderProps) {
     const trigger = useAtTopOfPage();
     const [rerenderState, rerender] = useState(false);
+    const [smallHeader, setSmallHeader] = useState(() =>
+        typeof window !== 'undefined' && window.matchMedia(HEADER_MEDIA_QUERY).matches);
 
     if(typeof window !== 'undefined' && !window.JETBRAINSMONO_LOADED) {
         // @ts-ignore - fonts exists but TypeScript doesn't know that for some reason
@@ -75,6 +94,13 @@ export default function BreadcrumbHeader({ name, announcementsLast, className }:
             rerender(!rerenderState);
         });
     }
+    
+    useEffect(() => {
+        const mediaQuery = window.matchMedia(HEADER_MEDIA_QUERY);
+        mediaQuery.addEventListener("change", (e) => {
+            setSmallHeader(e.matches);
+        });
+    }, []);
 
     const nameWidth = useMemo(() => {
         if(typeof window === 'undefined') return undefined;
@@ -82,7 +108,7 @@ export default function BreadcrumbHeader({ name, announcementsLast, className }:
         if(sw === undefined) return window.TEXT_WIDTH ?? 0;
         window.TEXT_WIDTH = sw;
         return sw;
-    }, [typeof window !== 'undefined' && window.JETBRAINSMONO_LOADED]);
+    }, [typeof window !== 'undefined' && window.JETBRAINSMONO_LOADED, smallHeader]);
 
     const styles = useStyles({ trigger, nameWidth });
 

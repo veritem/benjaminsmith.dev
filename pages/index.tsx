@@ -12,6 +12,7 @@ import PositionCard from "../components/PositionCard";
 import AwardCard from "../components/AwardCard";
 import { AnnouncementCard } from "../components/AnnouncementCard";
 import BreadcrumbHeader from "../components/BreadcrumbHeader";
+import { MARGIN_CHANGE_BREAKPOINT } from "../src/theme";
 
 interface ProfileButton {
     hoverText: string,
@@ -23,7 +24,7 @@ export interface HomeProps {
     initialApolloState: any
 }
 
-function calculateSizeMetricForProjectCard(project: FeaturedProjectIndexFragment) {
+/*function calculateSizeMetricForProjectCard(project: FeaturedProjectIndexFragment) {
     let size = 30;
     if(project.tagline) size += Math.ceil(project.tagline.length / 40) * 40;
 
@@ -34,13 +35,58 @@ function calculateSizeMetricForProjectCard(project: FeaturedProjectIndexFragment
             throw new Error("Width or height of image is undefined or 0, is it a different file type?");
         }
         // This doesn't really need to be this accurate
-        let width = 40; // rem
-        let height = Math.min(width / (imageData.width / imageData.height), 18); // rem
+        let width = IMAGE_MAX_WIDTH; // rem
+        let height = Math.min(width / (imageData.width / imageData.height), IMAGE_MAX_HEIGHT); // rem
         // Now width and height contain the correct values in rem
         // Width is correct in characters but height is not
         // 823 / 30 (27.4333...) is the number of pixels in a line
         // 16 is the number of pixels in a rem
         size += width * (16 / ((823 / 30)) * height);
+    }
+
+    return size;
+}*/
+
+// https://stackoverflow.com/a/51506718
+const wrap = (s: string, w: number) => s.replace(
+    new RegExp(`(?![^\\n]{1,${w}}$)([^\\n]{1,${w}})\\s`, 'g'), '$1\n'
+);
+
+// In all of these constants em is actually rem
+
+const PX_IN_EM = 16;
+// The empty card is 69.7 px tall
+const EMPTY_CARD_HEIGHT_IN_EM = 69.7 / PX_IN_EM;
+const TITLE_LINE_HEIGHT_IN_EM = 36.5833 / PX_IN_EM;
+const TAGLINE_LINE_HEIGHT_IN_EM = (823 / 30) / PX_IN_EM;
+const TITLE_CHARACTERS_PER_LINE = 25;
+const TAGLINE_CHARACTERS_PER_LINE = 40;
+const IMAGE_HORIZONTAL_PADDING_IN_EM = 2;
+const IMAGE_VERTICAL_PADDING_IN_EM = IMAGE_HORIZONTAL_PADDING_IN_EM;
+// 28rem - 2rem padding
+const IMAGE_MAX_WIDTH_IN_EM = 28 - IMAGE_HORIZONTAL_PADDING_IN_EM;
+// 18rem - 2rem padding
+const IMAGE_MAX_HEIGHT_IN_EM = 18 - IMAGE_VERTICAL_PADDING_IN_EM;
+
+function calculateSizeMetricForProjectCard(project: FeaturedProjectIndexFragment) {
+    // The initial version used the width of one character in the tagline as the unit for some reason
+    // and it returned the number of characters, but converted the image to the equivalent number
+    // of characters and did some rounding to make it really in units of lines?????
+    // This time I'll do this in a way that actually makes sense
+
+    let size = EMPTY_CARD_HEIGHT_IN_EM;
+    // Wrap the text and figure out how many lines it takes up, then figure out how tall it is in em
+    size += (wrap(project.title, TITLE_CHARACTERS_PER_LINE).split("\n").length) * TITLE_LINE_HEIGHT_IN_EM;
+    // Do the same for the tagline
+    if(project.tagline) size += (wrap(project.tagline, TAGLINE_CHARACTERS_PER_LINE).split("\n").length) * TAGLINE_LINE_HEIGHT_IN_EM;
+
+    const imageData = project.mediaCollection?.items[0];
+    if(imageData) {
+        if(!imageData.width || !imageData.height) {
+            throw new Error("Width or height of image is undefined or 0, is it a different file type?");
+        }
+        size += IMAGE_VERTICAL_PADDING_IN_EM;
+        size += Math.min(IMAGE_MAX_WIDTH_IN_EM / (imageData.width / imageData.height), IMAGE_MAX_HEIGHT_IN_EM);
     }
 
     return size;
@@ -123,10 +169,13 @@ const useStyles = makeStyles((theme) => ({
     },
     announcementCard: {
         margin: "0 -8rem",
+        [theme.breakpoints.down(MARGIN_CHANGE_BREAKPOINT)]: {
+            margin: "0 -4rem"
+        },
         border: 0,
         backgroundColor: theme.palette.primary.dark,
         "& a": {
-            color: theme.palette.primary.light
+            color: theme.palette.primary.light + " !important"
         },
         "&:not(:first-child)": {
             borderTop: "1px solid " + theme.palette.primary.light

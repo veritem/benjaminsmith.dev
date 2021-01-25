@@ -1785,7 +1785,7 @@ export const ProjectPageFragmentDoc = gql`
   mediaCollection {
     items {
       title
-      url(transform: {format: WEBP})
+      url(transform: {format: WEBP, width: 1920})
     }
   }
   tagline

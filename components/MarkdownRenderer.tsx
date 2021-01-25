@@ -9,6 +9,17 @@ const useStyles = makeStyles((theme) => ({
             "&:hover": {
                 textDecoration: "underline"
             }
+        },
+        "& pre": {
+            backgroundColor: theme.palette.background.default,
+            display: "inline-block",
+            padding: "0.5rem",
+            borderRadius: "0.5rem"
+        },
+        "& code": {
+            backgroundColor: theme.palette.background.paper,
+            padding: "0 0.25rem",
+            borderRadius: "0.25rem"
         }
     }
 }))

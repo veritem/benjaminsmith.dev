@@ -8,6 +8,9 @@ const useStyles = makeStyles((theme) => ({
     card: {
         "& p": {
             marginBottom: "0"
+        },
+        "& a": {
+            color: theme.palette.primary.light + " !important"
         }
     },
     cardContent: {

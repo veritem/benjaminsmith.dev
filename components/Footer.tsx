@@ -63,7 +63,7 @@ export default function Footer({ prevUrl, nextUrl }: FooterProps) {
         <div className={styles.wrapper}>
             <Typography className={styles.buildId} color="textSecondary">Build ID: {
                 process.env.NEXT_PUBLIC_BUILD_ID ? (
-                    <Link href={"https://github.com/Merlin04/benjaminsmith.dev/commit/" + process.env.NEXT_PUBLIC_BUILD_ID}>
+                    <Link href={process.env.NEXT_PUBLIC_GITHUB_URL + "/commit/" + process.env.NEXT_PUBLIC_BUILD_ID}>
                         {process.env.NEXT_PUBLIC_BUILD_ID}
                     </Link>
                 ) : "(is dev build)"

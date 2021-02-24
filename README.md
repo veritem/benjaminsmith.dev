@@ -6,6 +6,8 @@ Create the following env files:
   ```
   NEXT_PUBLIC_CONTENTFUL_SPACE_ID=[Insert space ID (not the name) here]
   NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN=[Insert access token here]
+  NEXT_PUBLIC_GITHUB_URL=[Insert GitHub repository here]
+  NEXT_PRIVATE_DOMAIN=[Insert website domain name here (used for webring)]
   ```
 - `.env.contentful-codegen`:
   ```

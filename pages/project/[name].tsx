@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { initializeApollo } from '../../src/apolloClient';
 import { NameDocument, ProjectPageDocument, ProjectPageQuery, ProjectPageQueryVariables, useNameQuery, useProjectPageQuery, ProjectNamesQuery, ProjectNamesQueryVariables, ProjectNamesDocument } from '../../src/generated/queries';
-import { HomeProps } from '../index';
+import { ApolloStateProps } from '../index';
 import Error404 from '../404';
 import ImageGallery from '../../components/ImageGallery';
 import { useMemo } from 'react';
@@ -121,7 +121,7 @@ export default function Project() {
     )
 }
 
-export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
+export const getStaticProps: GetStaticProps<ApolloStateProps> = async (context) => {
     const apolloClient = initializeApollo();
 
     if(context.params?.name !== undefined && !Array.isArray(context.params.name)) {

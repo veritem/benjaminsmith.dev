@@ -13,6 +13,7 @@ import AwardCard from "../components/AwardCard";
 import { AnnouncementCard } from "../components/AnnouncementCard";
 import BreadcrumbHeader from "../components/BreadcrumbHeader";
 import { MARGIN_CHANGE_BREAKPOINT } from "../src/theme";
+import Webring, { WebringMember, wrDataToUrls } from "../components/Webring";
 
 interface ProfileButton {
     hoverText: string,
@@ -20,8 +21,12 @@ interface ProfileButton {
     href: string | null | undefined
 }
 
-export interface HomeProps {
+export interface ApolloStateProps {
     initialApolloState: any
+}
+
+interface HomeProps extends ApolloStateProps {
+    webringUrls: string[]
 }
 
 /*function calculateSizeMetricForProjectCard(project: FeaturedProjectIndexFragment) {
@@ -425,6 +430,7 @@ export default function Home(props: HomeProps) {
                     <NextMuiLink href="/announcements">View past announcements...</NextMuiLink>
                 </>
             )}
+            <Webring prevUrl={props.webringUrls[0]} nextUrl={props.webringUrls[1]}/>
         </div>
     );
 }
@@ -437,9 +443,13 @@ export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
         query: IndexDataDocument
     });
 
+    const webringRes = await fetch("https://webring.hackclub.com/public/members.json");
+    const webringData: WebringMember[] = await webringRes.json();
+
     return {
         props: {
-            initialApolloState: apolloClient.cache.extract()
+            initialApolloState: apolloClient.cache.extract(),
+            webringUrls: wrDataToUrls(webringData)
         },
         revalidate: 10
     }

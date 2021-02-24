@@ -1,4 +1,4 @@
-import { HomeProps } from ".";
+import { ApolloStateProps } from ".";
 import { GetStaticProps } from "next";
 import { initializeApollo } from "../src/apolloClient";
 import { AnnouncementsDocument, useAnnouncementsQuery, NameDocument, useNameQuery } from "../src/generated/queries";
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Announcements(props: HomeProps) {
+export default function Announcements(props: ApolloStateProps) {
     const styles = useStyles();
 
     const { data } = useAnnouncementsQuery();
@@ -45,7 +45,7 @@ export default function Announcements(props: HomeProps) {
     );
 }
 
-export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
+export const getStaticProps: GetStaticProps<ApolloStateProps> = async (context) => {
     const apolloClient = initializeApollo();
 
     // Items will be added to cache so they can be accessed by the page immediately

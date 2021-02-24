@@ -25,7 +25,8 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-markdown": "^5.0.3",
-    "typeface-jetbrains-mono": "^2.0.0"
+    "typeface-jetbrains-mono": "^2.0.0",
+    "next-build-id": "^3.0.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "1.20.1",

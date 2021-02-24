@@ -14,7 +14,7 @@
 +    "react": "npm:@preact/compat",
 +    "react-dom": "npm:@preact/compat",
      "react-markdown": "^5.0.3",
-     "typeface-jetbrains-mono": "^2.0.0"
+     "typeface-jetbrains-mono": "^2.0.0",
    },
 @@ -40,6 +43,7 @@
      "dotenv-cli": "^4.0.0",

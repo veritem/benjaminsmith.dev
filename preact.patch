@@ -1,10 +1,10 @@
---- "package copy.json"	2021-01-07 20:13:17.817720430 -0800
-+++ package.json	2021-01-07 20:13:43.589583149 -0800
-@@ -17,9 +17,12 @@
+--- package.json	2021-02-24 03:54:52.206394381 +0000
++++ preact-package.json	2021-02-24 03:59:33.755834835 +0000
+@@ -21,9 +21,12 @@
      "@material-ui/core": "^4.11.2",
      "@material-ui/icons": "^4.11.2",
      "graphql": "^15.4.0",
--    "next": "10.0.4",
+-    "next": "10.0.7",
 -    "react": "17.0.1",
 -    "react-dom": "17.0.1",
 +    "next": "^10.0.5",
@@ -16,3 +16,12 @@
      "react-markdown": "^5.0.3",
      "typeface-jetbrains-mono": "^2.0.0"
    },
+@@ -40,6 +43,7 @@
+     "dotenv-cli": "^4.0.0",
+     "fix-contentful-schema": "./fix-contentful-schema/",
+     "prettier": "^2.2.1",
+-    "typescript": "^4.1.3"
++    "typescript": "^4.1.3",
++    "webpack": "^5.24.1"
+   }
+ }

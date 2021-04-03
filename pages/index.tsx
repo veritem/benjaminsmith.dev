@@ -446,6 +446,9 @@ export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
     const webringRes = await fetch("https://webring.hackclub.com/public/members.json");
     const webringData: WebringMember[] = await webringRes.json();
 
+    // Debug
+    console.log(webringData);
+
     return {
         props: {
             initialApolloState: apolloClient.cache.extract(),

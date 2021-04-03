@@ -3,7 +3,17 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const withPreact = require('next-plugin-preact');
+const nextBuildId = require('next-build-id');
 
 module.exports = withPreact(withBundleAnalyzer({
-    target: 'serverless'
+    target: 'serverless',
+    generateBuildId: () => nextBuildId({ dir: __dirname }),
+    webpack: (config, { webpack, buildId, isServer }) => {
+        config.plugins.push(
+            new webpack.DefinePlugin({
+                'process.env.NEXT_PUBLIC_BUILD_ID': JSON.stringify(buildId)
+            })
+        );
+        return config;
+    }
 }));

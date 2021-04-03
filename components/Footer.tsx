@@ -1,11 +1,21 @@
-import { makeStyles } from "@material-ui/core"
+import { makeStyles, Typography, Link, Divider } from "@material-ui/core"
 
 const useStyles = makeStyles({
     wrapper: {
         width: "100%",
         display: "flex",
-        justifyContent: "center",
-        marginTop: "1rem"
+        flexDirection: "column",
+        "& > *": {
+            marginTop: "1rem"
+        },
+        alignItems: "center"
+    },
+    buildId: {
+        fontSize: "0.8rem"
+    },
+    webringWrapper: {
+        display: "flex",
+        justifyContent: "center"
     },
     webringAnchor: {
         fontSize: "24px",
@@ -41,35 +51,45 @@ export interface WebringMember {
     url: string
 }
 
-export interface WebringProps {
+export interface FooterProps {
     prevUrl: string,
     nextUrl: string
 }
 
-export default function Webring({ prevUrl, nextUrl }: WebringProps) {
+export default function Footer({ prevUrl, nextUrl }: FooterProps) {
     const styles = useStyles();
 
     return (
         <div className={styles.wrapper}>
-            <a
-                href={prevUrl}
-                className={styles.webringAnchor}
-                title="Previous"
-            >
-                ‹
-            </a>
-            <a
-                href="https://webring.hackclub.com/"
-                className={styles.webringLogo}
-                title="Hack Club Webring"
-            ></a>
-            <a
-                href={nextUrl}
-                className={styles.webringAnchor}
-                title="Next"
-            >
-                ›
-            </a>
+            <Typography className={styles.buildId} color="textSecondary">Build ID: {
+                process.env.NEXT_PUBLIC_BUILD_ID ? (
+                    <Link href={process.env.NEXT_PUBLIC_GITHUB_URL + "/commit/" + process.env.NEXT_PUBLIC_BUILD_ID}>
+                        {process.env.NEXT_PUBLIC_BUILD_ID}
+                    </Link>
+                ) : "(is dev build)"
+            }
+            </Typography>
+            <div className={styles.webringWrapper}>
+                <a
+                    href={prevUrl}
+                    className={styles.webringAnchor}
+                    title="Previous"
+                >
+                    ‹
+                </a>
+                <a
+                    href="https://webring.hackclub.com/"
+                    className={styles.webringLogo}
+                    title="Hack Club Webring"
+                ></a>
+                <a
+                    href={nextUrl}
+                    className={styles.webringAnchor}
+                    title="Next"
+                >
+                    ›
+                </a>
+            </div>
         </div>
     );
 }

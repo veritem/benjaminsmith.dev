@@ -13,7 +13,7 @@ import AwardCard from "../components/AwardCard";
 import { AnnouncementCard } from "../components/AnnouncementCard";
 import BreadcrumbHeader from "../components/BreadcrumbHeader";
 import { MARGIN_CHANGE_BREAKPOINT } from "../src/theme";
-import Webring, { WebringMember, wrDataToUrls } from "../components/Webring";
+import Footer, { WebringMember, wrDataToUrls } from "../components/Footer";
 
 interface ProfileButton {
     hoverText: string,
@@ -430,7 +430,7 @@ export default function Home(props: HomeProps) {
                     <NextMuiLink href="/announcements">View past announcements...</NextMuiLink>
                 </>
             )}
-            <Webring prevUrl={props.webringUrls[0]} nextUrl={props.webringUrls[1]}/>
+            <Footer prevUrl={props.webringUrls[0]} nextUrl={props.webringUrls[1]}/>
         </div>
     );
 }

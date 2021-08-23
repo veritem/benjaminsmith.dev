@@ -6,7 +6,7 @@ import Masonry from "../components/Masonry";
 import ProjectCard from "../components/ProjectCard";
 import NextMuiLink from "../components/NextMuiLink";
 import { initializeApollo } from "../src/apolloClient";
-import { FeaturedProjectIndexFragment, IndexDataDocument, useIndexDataQuery, KeyValuePairDataFragment } from "../src/generated/queries";
+import { FeaturedProjectIndexFragment, IndexDataDocument, useIndexDataQuery, KeyValuePairDataFragment, PositionIndexFragment } from "../src/generated/queries";
 import { useMemo, useState } from "react";
 import PositionCard from "../components/PositionCard";
 import AwardCard from "../components/AwardCard";
@@ -240,6 +240,18 @@ function extractValuesFromProfile(profile: KeyValuePairDataFragment[]): ProfileV
     return values;
 }
 
+// Sort the positions so that at the beginning are the positions with an undefined endDate (sorted by their startDate from most recent to oldest), then all the others sorted by their startDate from most recent to oldest
+function sortPositions(positions: PositionIndexFragment[]): PositionIndexFragment[] {
+    // Split the positions into two arrays, one with the positions with an undefined endDate and the other for the others
+    return positions.reduce<[PositionIndexFragment[], PositionIndexFragment[]]>((accumulator, position) => {
+        accumulator[position.endDate ? 1 : 0].push(position);
+        return accumulator;
+    }, [[], []])
+        .map((positions) => positions.sort((a, b) => +parseStringDate(b.startDate) - +parseStringDate(a.startDate)))
+        .flat();
+}
+
+
 function parseStringDate(date: string) {
     const split = date.split('/');
     switch(split.length) {
@@ -293,7 +305,7 @@ export default function Home(props: HomeProps) {
     }
 
     // Slice is to copy the array so positionCollection isn't mutated
-    const sortedPositions = useMemo(() => positionCollection.items.slice().sort((a, b) => +parseStringDate(b.startDate) - +parseStringDate(a.startDate)), []);
+    const sortedPositions = useMemo(() => sortPositions(positionCollection.items), []);
 
     const awards = indexData.awardCollection?.items;
 

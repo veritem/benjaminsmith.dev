@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
 import { CssBaseline, LinearProgress, ThemeProvider } from '@material-ui/core';
-import { AppProps } from 'next/dist/next-server/lib/router/router';
+import { AppProps } from 'next/dist/shared/lib/router/router';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useApollo } from '../src/apolloClient';

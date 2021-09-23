@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build-vercel": "yum install patch -y && yarn install && yarn gql-codegen-vercel && yarn add-preact && yarn build",
     "build-preact": "yarn add-preact && yarn build && yarn remove-preact",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze-preact": "yarn add-preact && yarn analyze && yarn remove-preact",

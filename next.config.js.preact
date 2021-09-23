@@ -1,11 +1,11 @@
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+/*const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true'
-});
+});*/
 
 const withPreact = require('next-plugin-preact');
 const nextBuildId = require('next-build-id');
 
-module.exports = withPreact(withBundleAnalyzer({
+module.exports = /*withPreact(*/withBundleAnalyzer({
     target: 'serverless',
     generateBuildId: () => nextBuildId({ dir: __dirname }),
     webpack: (config, { webpack, buildId, isServer }) => {
@@ -16,4 +16,4 @@ module.exports = withPreact(withBundleAnalyzer({
         );
         return config;
     }
-}));
+})/*)*/;

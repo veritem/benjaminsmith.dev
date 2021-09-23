@@ -2,23 +2,31 @@ import { GetStaticProps } from "next";
 import { initializeApollo } from "../src/apolloClient";
 import { ResumeDocument, ResumeQuery, ResumeQueryVariables } from "../src/generated/queries";
 
-export default function resume() {
-    return null;
+interface ResumeProps {
+    url: string;
 }
 
-export const getStaticProps: GetStaticProps<{}> = async (context) => {
+export default function resume(props: ResumeProps) {
+    return <script dangerouslySetInnerHTML={{ __html: `window.location.href="${props.url}"` }} />;
+}
+
+export const getStaticProps: GetStaticProps<ResumeProps> = async (context) => {
     const apolloClient = initializeApollo();
 
     // Items will be added to cache so they can be accessed by the page immediately
-    const res = await apolloClient.query<ResumeQuery, ResumeQueryVariables>({
+    const url = (await apolloClient.query<ResumeQuery, ResumeQueryVariables>({
         query: ResumeDocument
-    });
+    })).data.assetCollection?.items[0]?.url;
+
+    if (!url) {
+        return {
+            notFound: true
+        };
+    }
 
     return {
-        props: {},
-        redirect: {
-            destination: res.data.assetCollection?.items[0]?.url,
-            permanent: false
+        props: {
+            url
         },
         revalidate: 10
     }

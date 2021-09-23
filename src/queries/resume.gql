@@ -1,1 +1,9 @@
-aaz
+query Resume {
+  assetCollection(where: {
+    title: "Resume"
+  }, limit: 1) {
+    items {
+      url
+    }
+  }
+}

@@ -5,14 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build-vercel": "yum install patch -y && yarn add-preact && yarn build",
-    "build-preact": "yarn add-preact && yarn build && yarn remove-preact",
     "analyze": "cross-env ANALYZE=true next build",
-    "analyze-preact": "yarn add-preact && yarn analyze && yarn remove-preact",
     "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build",
-    "add-preact": "patch -p1 -u package.json -i preact.patch && mv next.config.js next.config.js.bak && mv next.config.js.preact next.config.js && yarn",
-    "remove-preact": "mv next.config.js next.config.js.preact && mv next.config.js.bak next.config.js && patch -R -p1 -u package.json -i preact.patch && yarn",
     "start": "next start",
     "gql-codegen": "dotenv -e .env.contentful-codegen -- cross-var fix-contentful-schema --output graphql.schema.json --token %CONTENTFUL_CONTENT_TOKEN% --management %CONTENTFUL_MANAGEMENT_TOKEN% --space %CONTENTFUL_SPACE_ID% && graphql-codegen --config codegen.yml",
     "gql-codegen-vercel": "fix-contentful-schema --output graphql.schema.json --token $CONTENTFUL_CONTENT_TOKEN --management $CONTENTFUL_MANAGEMENT_TOKEN --space $CONTENTFUL_SPACE_ID && graphql-codegen --config codegen.yml"
@@ -22,10 +17,10 @@
     "@material-ui/core": "^4.11.2",
     "@material-ui/icons": "^4.11.2",
     "graphql": "^15.4.0",
-    "next": "^10.2.3",
+    "next": "12",
     "next-build-id": "^3.0.0",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-markdown": "^5.0.3",
     "typeface-jetbrains-mono": "^2.0.0"
   },

@@ -1,5 +1,4 @@
 import { Typography, TypographyProps } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
 import ReactMarkdown from "react-markdown";
 import theme from "../src/theme";
 

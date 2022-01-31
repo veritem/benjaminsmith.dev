@@ -1,5 +1,17 @@
-import { Accordion, AccordionDetails, AccordionSummary, IconButton, Link, makeStyles, Tooltip, Typography, Card, CardContent } from "@material-ui/core";
-import { ExpandMore, GitHub, Link as LinkIcon, LinkedIn } from "@material-ui/icons";
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    IconButton,
+    Link,
+    Tooltip,
+    Typography,
+    Card,
+    CardContent,
+    Box,
+    SxProps,
+} from "@mui/material";
+import { ExpandMore, GitHub, Link as LinkIcon, LinkedIn } from "@mui/icons-material";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 import Masonry from "../components/Masonry";
@@ -12,7 +24,7 @@ import PositionCard from "../components/PositionCard";
 import AwardCard from "../components/AwardCard";
 import { AnnouncementCard } from "../components/AnnouncementCard";
 import BreadcrumbHeader from "../components/BreadcrumbHeader";
-import { MARGIN_CHANGE_BREAKPOINT } from "../src/theme";
+import theme, { MARGIN_CHANGE_BREAKPOINT } from "../src/theme";
 import Footer, { WebringMember, wrDataToUrls } from "../components/Footer";
 
 interface ProfileButton {
@@ -29,28 +41,7 @@ interface HomeProps extends ApolloStateProps {
     webringUrls: string[]
 }
 
-/*function calculateSizeMetricForProjectCard(project: FeaturedProjectIndexFragment) {
-    let size = 30;
-    if(project.tagline) size += Math.ceil(project.tagline.length / 40) * 40;
-
-    // About 40 characters fit on one line of the tagline
-    const imageData = project.mediaCollection?.items[0];
-    if(imageData !== undefined && imageData !== null) {
-        if(!imageData.width || !imageData.height) {
-            throw new Error("Width or height of image is undefined or 0, is it a different file type?");
-        }
-        // This doesn't really need to be this accurate
-        let width = IMAGE_MAX_WIDTH; // rem
-        let height = Math.min(width / (imageData.width / imageData.height), IMAGE_MAX_HEIGHT); // rem
-        // Now width and height contain the correct values in rem
-        // Width is correct in characters but height is not
-        // 823 / 30 (27.4333...) is the number of pixels in a line
-        // 16 is the number of pixels in a rem
-        size += width * (16 / ((823 / 30)) * height);
-    }
-
-    return size;
-}*/
+const COOL_TIMING_FUNCTION = "cubic-bezier(.17,.84,.44,1)";
 
 // https://stackoverflow.com/a/51506718
 const wrap = (s: string, w: number) => s.replace(
@@ -96,108 +87,6 @@ function calculateSizeMetricForProjectCard(project: FeaturedProjectIndexFragment
 
     return size;
 }
-
-const useStyles = makeStyles((theme) => ({
-    projectCard: {
-        display: "inline-block",
-        height: "min-content",
-        margin: `${theme.spacing(3)}px ${theme.spacing(3)}px 0 0`,
-        "& img": {
-            display: "block"
-        },
-        transition: "transform 0.3s ease-in-out",
-        "&:hover": {
-            transform: "scale(1.05)"
-        }
-    },
-    projectCardContainer: {
-        maxWidth: "30rem"
-    },
-    projectsContainer: {
-        // Style the div, not the Masonry element, so it works with server side rendering
-        marginRight: `-${theme.spacing(3)}px`,
-    },
-    otherProjectsContainer: {
-        fontSize: "1.5rem",
-        "& a": {
-            color: "white"
-        }
-    },
-    positionPanelContainer: {
-        margin: "1rem 0"
-    },
-    positionPanel: {
-        maxWidth: "45rem",
-        "&::before": {
-            opacity: "0"
-        },
-        "& > .MuiAccordionSummary-root": {
-            display: "none"
-        },
-        "& .MuiAccordionDetails-root": {
-            padding: 0,
-            flexDirection: "column"
-        },
-        
-    },
-    additionalPositionPanel: {
-        // margin 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms is normally applied to the accordion element,
-        // it is manually added here so overriding the transition property doesn't remove it
-        transition: "border 300ms steps(1, jump-end),margin 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-        border: "0px solid white",
-        "&.Mui-expanded": {
-            border: "1px solid white",
-            transition: "border 0s,margin 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms"
-        }
-    },
-    accordionToggle: {
-        marginTop: "0 !important",
-        "&::before": {
-            opacity: "initial !important"
-        },
-        "& .MuiAccordionSummary-root": {
-            minHeight: "48px"
-        },
-        "& .MuiAccordionSummary-content": {
-            margin: "12px 0"
-        }
-    },
-    awardCard: {
-        maxWidth: "45rem",
-        marginTop: "1rem"
-    },
-    awardHeader: {
-        marginTop: "1rem"
-    },
-    announcementCardContainer: {
-        margin: "1rem 0"
-    },
-    announcementCard: {
-        margin: "0 -8rem",
-        [theme.breakpoints.down(MARGIN_CHANGE_BREAKPOINT)]: {
-            margin: "0 -4rem"
-        },
-        border: 0,
-        backgroundColor: theme.palette.primary.dark,
-        "& a": {
-            color: theme.palette.primary.light + " !important"
-        },
-        "&:not(:first-child)": {
-            borderTop: "1px solid " + theme.palette.primary.light
-        }
-    },
-    announcementViewMore: {
-        paddingBottom: "1rem !important"
-    },
-    scrollAnchor: {
-        position: "relative",
-        top: "-4.5rem"
-    },
-    backToTopAnchor: {
-        position: "relative",
-        top: "-8rem"
-    }
-}));
 
 const getValueFromProfile = (profile: KeyValuePairDataFragment[], key: string) =>
     profile.filter(item => item.key === key)[0].value;
@@ -274,8 +163,43 @@ function sortItemsByDate<T>(items: T[], getDateProperty: {(item: T): string}) {
     return items.slice().sort((a, b) => +parseStringDate(getDateProperty(b)) - +parseStringDate(getDateProperty(a)));
 }
 
+const positionPanelStyles: SxProps = {
+    maxWidth: "45rem",
+    "&::before": {
+        opacity: "0"
+    },
+    "& > .MuiAccordionSummary-root": {
+        display: "none"
+    },
+    "& .MuiAccordionDetails-root": {
+        padding: 0,
+        flexDirection: "column"
+    }
+};
+
+const announcementCardStyles: SxProps = {
+    margin: "0 -8rem",
+    [theme.breakpoints.down(MARGIN_CHANGE_BREAKPOINT)]: {
+        margin: "0 -4rem"
+    },
+    border: 0,
+    backgroundColor: theme.palette.primary.dark,
+    "& a": {
+        color: theme.palette.primary.light + " !important"
+    },
+    "&:not(:first-child)": {
+        borderTop: "1px solid " + theme.palette.primary.light
+    }
+};
+
+const ScrollAnchor = ({ id }: { id: string }) => (
+    <Box id={id} sx={{
+        position: "relative",
+        top: "-4.5rem"
+    }} />
+)
+
 export default function Home(props: HomeProps) {
-    const styles = useStyles();
     const { data: indexData } = useIndexDataQuery();
     const [additionalPanelsExpanded, setAdditionalPanelsExpanded] = useState(false);
 
@@ -339,14 +263,17 @@ export default function Home(props: HomeProps) {
             <Head>
                 <title>{profile.name}</title>
             </Head>
-            <div id="backToTopAnchor" className={styles.backToTopAnchor}/>
+            <Box id="backToTopAnchor" sx={{
+                position: "relative",
+                top: "-8rem"
+            }} />
             <BreadcrumbHeader name={profile.name} announcementsLast={announcements.length === 0}/>
             <Typography variant="h2">{profile.name}</Typography>
             <Typography variant="h4">{profile.tagline}</Typography>
             {profileButtons.map(item => (
                 <Link key={item.hoverText} href={item.href ?? undefined}>
                     <Tooltip title={item.hoverText} aria-label={item.hoverText}>
-                        <IconButton>
+                        <IconButton size="large">
                             {item.icon}
                         </IconButton>
                     </Tooltip>
@@ -354,26 +281,43 @@ export default function Home(props: HomeProps) {
             ))}
             {announcements.length > 0 && (
                 <>
-                    <div id="announcements" className={styles.scrollAnchor}/>
-                    <div className={styles.announcementCardContainer}>
+                    <ScrollAnchor id="announcements" />
+                    <Box sx={{
+                        margin: "1rem 0"
+                    }}>
                         {announcements.map(announcement => (
-                            <AnnouncementCard className={styles.announcementCard} key={announcement.information} announcement={announcement}/>
+                            <AnnouncementCard sx={announcementCardStyles} key={announcement.information} announcement={announcement}/>
                         ))}
-                        <Card className={styles.announcementCard} variant="outlined">
-                            <CardContent className={styles.announcementViewMore}>
+                        <Card sx={announcementCardStyles} variant="outlined">
+                            <CardContent sx={{
+                                paddingBottom: "1rem !important"
+                            }}>
                                 <NextMuiLink href="/announcements">View more announcements...</NextMuiLink>
                             </CardContent>
                         </Card>
-                    </div>
+                    </Box>
                 </>
             )}
-            <div id="work" className={styles.scrollAnchor}/>
+            <ScrollAnchor id="work" />
             <Typography variant="h4">Work</Typography>
-            <div className={styles.positionPanelContainer}>
-                <Accordion className={styles.positionPanel} variant="outlined">
+            <Box sx={{
+                margin: "1rem 0"
+            }}>
+                <Accordion sx={positionPanelStyles} variant="outlined">
                     <AccordionDetails>
                         <PositionCard position={sortedPositions[0]} showPoints={additionalPanelsExpanded}/>
-                        <Accordion className={styles.accordionToggle} onChange={(_, expanded) => {
+                        <Accordion sx={{
+                            marginTop: "0 !important",
+                            "&::before": {
+                                opacity: "initial !important"
+                            },
+                            "& .MuiAccordionSummary-root": {
+                                minHeight: "48px !important"
+                            },
+                            "& .MuiAccordionSummary-content": {
+                                margin: "12px 0 !important"
+                            }
+                        }} onChange={(_, expanded) => {
                             setAdditionalPanelsExpanded(expanded);
                         }}>
                             <AccordionSummary expandIcon={<ExpandMore/>} onClick={() => {
@@ -387,17 +331,30 @@ export default function Home(props: HomeProps) {
                     </AccordionDetails>
                 </Accordion>
                 {sortedPositions.length > 1 && sortedPositions.slice(1).map(position => (
-                    <Accordion key={position.company} className={styles.positionPanel + " " + styles.additionalPositionPanel} expanded={additionalPanelsExpanded}>
+                    <Accordion sx={{
+                        ...positionPanelStyles,
+                        // margin 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms is normally applied to the accordion element,
+                        // it is manually added here so overriding the transition property doesn't remove it
+                        transition: "border 300ms steps(1, jump-end),margin 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important",
+                        border: "0px solid white !important",
+                        "&.Mui-expanded": {
+                            border: "1px solid white !important",
+                            transition: "border 0s,margin 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms !important"
+                        }
+                    }} key={position.company} expanded={additionalPanelsExpanded}>
                         <AccordionSummary/>
                         <AccordionDetails>
                             <PositionCard position={position}/>
                         </AccordionDetails>
                     </Accordion>
                 ))}
-            </div>
-            <div id="projects" className={styles.scrollAnchor}/>
+            </Box>
+            <ScrollAnchor id="projects" />
             <Typography variant="h4">Projects</Typography>
-            <div className={styles.projectsContainer}>
+            <Box sx={{
+                // Style the div, not the Masonry element, so it works with server side rendering
+                marginRight: theme.spacing(-3),
+            }}>
                 <Masonry
                     maxCols={5}
                     sizeMetrics={projects.featuredProjectsCollection.items.map(calculateSizeMetricForProjectCard)}
@@ -405,16 +362,34 @@ export default function Home(props: HomeProps) {
                     borderWidth="8rem"
                 >
                     {projects.featuredProjectsCollection.items.map(project => (
-                        <div key={project.title} className={styles.projectCardContainer}>
+                        <Box key={project.title} sx={{
+                            maxWidth: "30rem"
+                        }}>
                             <NextMuiLink href={"/project/" + encodeURIComponent(project.title)}>
-                                <ProjectCard className={styles.projectCard} project={project}/>
+                                <ProjectCard sx={{
+                                    display: "inline-block",
+                                    height: "min-content",
+                                    margin: `${theme.spacing(3)} ${theme.spacing(3)} 0 0`,
+                                    "& img": {
+                                        display: "block"
+                                    },
+                                    transition: `transform 0.3s ${COOL_TIMING_FUNCTION}`,
+                                    "&:hover": {
+                                        transform: "scale(1.05)"
+                                    }                                    
+                                }} project={project}/>
                             </NextMuiLink>
-                        </div>
+                        </Box>
                     ))}
                 </Masonry>
-            </div>
+            </Box>
             {projects.notFeaturedProjectsCollection && projects.notFeaturedProjectsCollection.items.length > 0 && (
-                <ul className={styles.otherProjectsContainer}>
+                <Box component="ul" sx={{
+                    fontSize: "1.5rem",
+                    "& a": {
+                        color: "white"
+                    }            
+                }}>
                     {projects.notFeaturedProjectsCollection.items.map(project => (
                         <li key={project.title}>
                             <NextMuiLink href={"/project/" + encodeURIComponent(project.title)}>
@@ -422,22 +397,29 @@ export default function Home(props: HomeProps) {
                             </NextMuiLink>
                         </li>
                     ))}
-                </ul>
+                </Box>
             )}
             {/* Adding the className prop directly to the Typography element breaks CSS SSR for some reason */}
-            <div className={styles.awardHeader}>
-                <div id="awards" className={styles.scrollAnchor}/>
+            <Box sx={{
+                marginTop: "1rem"
+            }}>
+                <ScrollAnchor id="awards" />
                 <Typography variant="h4">Awards</Typography>
-            </div>
+            </Box>
             {sortedAwards.map(award => (
-                <AwardCard key={award.award + award.organization} className={styles.awardCard} award={award}/>
+                <AwardCard sx={{
+                    maxWidth: "45rem",
+                    marginTop: "1rem"            
+                }} key={award.award + award.organization} award={award}/>
             ))}
             {announcements.length === 0 && (
                 <>
-                    <div className={styles.awardHeader}>
-                        <div id="announcements" className={styles.scrollAnchor}/>
+                    <Box sx={{
+                        marginTop: "1rem"
+                    }}>
+                        <ScrollAnchor id="announcements" />
                         <Typography variant="h4">Announcements</Typography>
-                    </div>
+                    </Box>
                     <Typography variant="body1">There are no announcements at this time.</Typography>
                     <NextMuiLink href="/announcements">View past announcements...</NextMuiLink>
                 </>
@@ -457,9 +439,6 @@ export const getStaticProps: GetStaticProps<HomeProps> = async (context) => {
 
     const webringRes = await fetch("https://webring.hackclub.com/public/members.json");
     const webringData: WebringMember[] = await webringRes.json();
-
-    // Debug
-    console.log(webringData);
 
     return {
         props: {

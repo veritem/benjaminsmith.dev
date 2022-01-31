@@ -1,62 +1,54 @@
-import { makeStyles, Typography, Chip } from "@material-ui/core";
-import { CalendarToday } from "@material-ui/icons";
-import { Variant } from "@material-ui/core/styles/createTypography";
+import { Typography, Chip, TypographyProps, Box } from "@mui/material";
+import { CalendarToday } from "@mui/icons-material";
+import theme from "../src/theme";
 
 interface CardHeaderWithChipProps {
     title: string | React.ReactNode,
     subheader?: string | React.ReactNode,
     chip?: React.ReactNode,
-    headerVariant?: Variant
+    headerVariant?: TypographyProps["variant"]
 }
 
 const CARD_HEADER_BREAKPOINT = 650;
 
-const useStyles = makeStyles((theme) => ({
-    cardHeader: {
-        "& .MuiTypography-root": {
-            display: "inline-block"
-        },
-        "& a": {
-            color: "white"
-        },
-        "& > div > h5": {
-            marginRight: "1rem"
-        },
-        marginBottom: "1rem",
-        display: "flex",
-        [theme.breakpoints.down(CARD_HEADER_BREAKPOINT)]: {
-            display: "block"
-        },
-        alignItems: "center"
-    },
-    subheader: {
-        color: theme.palette.text.secondary
-    },
-    chip: {
-        marginLeft: "auto",
-        [theme.breakpoints.down(CARD_HEADER_BREAKPOINT)]: {
-            marginTop: "0.5rem"
-        }
-    }
-}));
-
 export default function CardHeaderWithChip(props: CardHeaderWithChipProps) {
-    const styles = useStyles();
-
     return (
-        <div className={styles.cardHeader}>
+        <Box sx={{
+            "& .MuiTypography-root": {
+                display: "inline-block"
+            },
+            "& a": {
+                color: "white"
+            },
+            "& > div > h5": {
+                marginRight: "1rem"
+            },
+            marginBottom: "1rem",
+            display: "flex",
+            [theme.breakpoints.down(CARD_HEADER_BREAKPOINT)]: {
+                display: "block"
+            },
+            alignItems: "center"    
+        }}>
             <div>
                 <Typography variant={props.headerVariant ?? "h5"}>{props.title}</Typography>
                 {props.subheader && (
-                    <Typography className={styles.subheader} variant="body1">{props.subheader}</Typography>
+                    <Typography sx={{
+                        color: theme.palette.text.secondary
+                    }} variant="body1">{props.subheader}</Typography>
                 )}
             </div>
             {props.chip && (
-                <div className={styles.chip}>
+                <Box sx={{
+                    marginLeft: "auto",
+                    [theme.breakpoints.down(CARD_HEADER_BREAKPOINT)]: {
+                        marginTop: "0.5rem"
+                    }            
+                }}>
                     {props.chip}
-                </div>
+                </Box>
             )}
-        </div>
+        </Box>
     );
 }
 

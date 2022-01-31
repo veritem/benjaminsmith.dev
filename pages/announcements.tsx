@@ -5,20 +5,9 @@ import { AnnouncementsDocument, useAnnouncementsQuery, NameDocument, useNameQuer
 import Head from "next/head";
 import { AnnouncementCard } from "../components/AnnouncementCard";
 import BackLink from "../components/BackLink";
-import { Typography, makeStyles } from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-    announcementCardContainer: {
-        marginTop: "1rem",
-        "& > *:not(:last-child)": {
-            marginBottom: "1rem"
-        }
-    }
-}));
+import { Typography, Box } from "@mui/material";
 
 export default function Announcements(props: ApolloStateProps) {
-    const styles = useStyles();
-
     const { data } = useAnnouncementsQuery();
     const announcements = data?.setOfAnnouncementsCollection?.items[0];
     if(announcements === undefined) throw new Error("GraphQL Announcements is undefined");
@@ -34,13 +23,18 @@ export default function Announcements(props: ApolloStateProps) {
             </Head>
             <BackLink/>
             <Typography variant="h2">Announcements</Typography>
-            <div className={styles.announcementCardContainer}>
+            <Box sx={{
+                marginTop: "1rem",
+                "& > *:not(:last-child)": {
+                    marginBottom: "1rem"
+                }
+            }}>
                 {[...(announcements.featuredAnnouncementsCollection?.items ?? []), ...(announcements.notFeaturedAnnouncementsCollection?.items ?? [])]
                     .map(announcement => (
                         <AnnouncementCard key={announcement.title ?? "" + announcement.information} announcement={announcement}/>
                     ))
                 }
-            </div>
+            </Box>
         </>
     );
 }

@@ -14,12 +14,7 @@ fragment ProjectPage on Project {
     codeUrl,
     mediaCollection {
         items {
-            title,
-            url(transform: {
-                format: WEBP,
-                # Maximum width
-                width: 1920
-            })
+            ...ProjectAsset
         }
     },
     tagline,
@@ -30,4 +25,15 @@ fragment ProjectPage on Project {
         }
     },
     description
+}
+
+fragment ProjectAsset on Asset {
+    title,
+    url(transform: {
+        format: WEBP,
+        # Maximum width
+        width: 1920
+    }),
+    width,
+    height
 }

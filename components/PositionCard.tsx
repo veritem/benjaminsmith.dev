@@ -1,12 +1,11 @@
-import { Card, CardContent, CardHeader, Chip, Collapse, Link, makeStyles, Typography } from "@material-ui/core";
-import { CalendarToday } from "@material-ui/icons";
+import { Card, CardContent, CardContentProps, CardHeader, Chip, Collapse, Link, Typography } from "@mui/material";
+import { CalendarToday } from "@mui/icons-material";
 import { PositionIndexFragment } from "../src/generated/queries";
 import CardHeaderWithChip, { DateChip } from "./CardHeaderWithChip";
 
 interface PositionCardProps {
     position: PositionIndexFragment,
-    showPoints?: boolean,
-    className?: string
+    showPoints?: boolean
 }
 
 const startAndEndDateFormat = (
@@ -19,7 +18,7 @@ const startAndEndDateFormat = (
         ? startDate
         : startDate + " - " + (endDate ?? "present");
 
-export default function PositionCard({ position, showPoints, className }: PositionCardProps) {
+export default function PositionCard({ position, showPoints, ...cardContentProps }: PositionCardProps & CardContentProps) {
     const points = position.points && (
         <ul>
             {position.points.map(point => (
@@ -29,7 +28,7 @@ export default function PositionCard({ position, showPoints, className }: Positi
     );
 
     return (
-      <CardContent className={className}>
+      <CardContent {...cardContentProps}>
         <CardHeaderWithChip
             title={
                 position.companyUrl !== undefined &&

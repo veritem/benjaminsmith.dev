@@ -1,6 +1,6 @@
 import { cloneElement, useEffect, useMemo, useState } from 'react';
-import { Breadcrumbs, Link, AppBar, Toolbar, makeStyles, useScrollTrigger, Typography } from "@material-ui/core";
-import { MARGIN_CHANGE_BREAKPOINT } from '../src/theme';
+import { Breadcrumbs, Link, AppBar, Toolbar, useScrollTrigger, Typography, Box } from "@mui/material";
+import theme, { MARGIN_CHANGE_BREAKPOINT } from '../src/theme';
 
 const TOOLBAR_BREAKPOINT = 720;
 
@@ -23,43 +23,6 @@ export function scrollToId(id: string) {
         element.scrollIntoView({ behavior: "smooth" });
     }
 }
-
-const useStyles = makeStyles((theme) => ({
-    appBar: {
-        backgroundColor: "#1b1b1b",
-        paddingLeft: "8rem",
-        paddingRight: "8rem",
-        [theme.breakpoints.down(MARGIN_CHANGE_BREAKPOINT)]: {
-            paddingLeft: "4rem",
-            paddingRight: "4rem"
-        }
-    },
-    toolbar: {
-        paddingLeft: 0,
-        paddingRight: 0,
-        "& a:hover": {
-            cursor: "pointer"
-        },
-        [theme.breakpoints.down(TOOLBAR_BREAKPOINT)]: {
-            "& *": {
-                fontSize: "1rem"
-            }
-        }
-    },
-    nameLinkContainer: (props: { trigger: boolean, nameWidth: number | undefined }) => ({
-        transition: "width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-        width: props.trigger ? (props.nameWidth ?? 0) + "px" : 0,
-        overflow: "hidden",
-        whiteSpace: "nowrap",
-        display: "flex",
-        [theme.breakpoints.down(TOOLBAR_BREAKPOINT)]: {
-            display: "none"
-        }
-    }),
-    nameLink: {
-        paddingRight: "1rem"
-    }
-}));
 
 interface BreadcrumbHeaderProps {
     name: string,
@@ -110,32 +73,63 @@ export default function BreadcrumbHeader({ name, announcementsLast, className }:
         return sw;
     }, [typeof window !== 'undefined' && window.JETBRAINSMONO_LOADED, smallHeader]);
 
-    const styles = useStyles({ trigger, nameWidth });
-
     const announcements = (
-        <Link color="inherit" onClick={() => scrollToId("announcements")}>
+        <Link onClick={() => scrollToId("announcements")}>
             Announcements
         </Link>
     );
 
     return (
         <ElevationScroll>
-            <AppBar className={styles.appBar} elevation={trigger ? 4 : 0} color="transparent">
-                <Toolbar className={styles.toolbar} variant="dense">
-                    <div id="nameLink" className={styles.nameLinkContainer}>
-                        <Link className={styles.nameLink} color="inherit" onClick={() => scrollToId("backToTopAnchor")}>
+            <AppBar sx={{
+                backgroundColor: "#1b1b1b",
+                paddingLeft: "8rem",
+                paddingRight: "8rem",
+                [theme.breakpoints.down(MARGIN_CHANGE_BREAKPOINT)]: {
+                    paddingLeft: "4rem",
+                    paddingRight: "4rem"
+                },
+                "& a": {
+                    color: "inherit !important"
+                }
+            }} elevation={trigger ? 4 : 0} color="transparent">
+                <Toolbar sx={{
+                    paddingLeft: "0 !important",
+                    paddingRight: "0 !important",
+                    "& a:hover": {
+                        cursor: "pointer"
+                    },
+                    [theme.breakpoints.down(TOOLBAR_BREAKPOINT)]: {
+                        "& *": {
+                            fontSize: "1rem"
+                        }
+                    }
+                }} variant="dense">
+                    <Box id="nameLink" sx={{
+                        transition: "width 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+                        width: trigger ? (nameWidth ?? 0) + "px" : 0,
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        display: "flex",
+                        [theme.breakpoints.down(TOOLBAR_BREAKPOINT)]: {
+                            display: "none"
+                        }
+                    }}>
+                        <Link sx={{
+                            paddingRight: "1rem"
+                        }} color="inherit" onClick={() => scrollToId("backToTopAnchor")}>
                             <Typography variant="body1">{name}</Typography>
                         </Link>
-                    </div>
+                    </Box>
                     <Breadcrumbs className={className} separator="|">
                         {!announcementsLast && announcements}
-                        <Link color="inherit" onClick={() => scrollToId("work")}>
+                        <Link onClick={() => scrollToId("work")}>
                             Work
                         </Link>
-                        <Link color="inherit" onClick={() => scrollToId("projects")}>
+                        <Link onClick={() => scrollToId("projects")}>
                             Projects
                         </Link>
-                        <Link color="inherit" onClick={() => scrollToId("awards")}>
+                        <Link onClick={() => scrollToId("awards")}>
                             Awards
                         </Link>
                         {announcementsLast && announcements}

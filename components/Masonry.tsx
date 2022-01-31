@@ -1,15 +1,5 @@
-import { makeStyles } from "@material-ui/core";
+import { Box, BoxProps } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { formatAdditionalClassName } from "../src/utils";
-
-const useStyles = makeStyles((theme) => ({
-    masonryContainer: {
-        "& > div": {
-            display: "inline-block",
-            verticalAlign: "top"
-        }
-    }
-}));
 
 /**
  * Calculate styles for a given column width
@@ -77,8 +67,7 @@ interface MasonryProps {
     // Distance from the edge of the window to the side of the masonry
     borderWidth: string | number,
     debug?: true,
-    className?: string,
-    children: React.ReactNodeArray
+    children: React.ReactNode[]
 }
 
 declare global {
@@ -96,7 +85,7 @@ if(typeof window !== 'undefined') {
     window.MASONRY_MEDIAEVTS = [];
 }
 
-export default function Masonry(props: MasonryProps) {
+export default function Masonry(props: MasonryProps & Pick<BoxProps, "sx">) {
     const [cols, setCols] = useState(1);
 
     const columnMaps = useMemo(() => Array.from({length: props.maxCols}, 
@@ -153,10 +142,14 @@ export default function Masonry(props: MasonryProps) {
         }
     }, [typeof window]);
 
-    const styles = useStyles();
-
     return (
-        <div className={styles.masonryContainer + formatAdditionalClassName(props.className)}>
+        <Box sx={{
+            "& > div": {
+                display: "inline-block",
+                verticalAlign: "top"
+            },
+            ...props.sx
+        }}>
             {columnMaps[cols - 1].map((column, index) => (
                 <div key={index}>
                     {column.map(childIndex => props.debug
@@ -164,6 +157,6 @@ export default function Masonry(props: MasonryProps) {
                         : props.children[childIndex])}
                 </div>
             ))}
-        </div>
+        </Box>
     )
 }

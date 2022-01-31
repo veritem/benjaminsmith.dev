@@ -1,52 +1,28 @@
-import { Button, Chip, LinearProgress, Link, makeStyles, Typography } from '@material-ui/core';
+import { Box, Button, Chip, LinearProgress, Link, SxProps, Typography } from '@mui/material';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
 import { initializeApollo } from '../../src/apolloClient';
-import { NameDocument, ProjectPageDocument, ProjectPageQuery, ProjectPageQueryVariables, useNameQuery, useProjectPageQuery, ProjectNamesQuery, ProjectNamesQueryVariables, ProjectNamesDocument } from '../../src/generated/queries';
+import { NameDocument, ProjectPageDocument, ProjectPageQuery, ProjectPageQueryVariables, useNameQuery, useProjectPageQuery, ProjectNamesQuery, ProjectNamesQueryVariables, ProjectNamesDocument, ProjectAssetFragment } from '../../src/generated/queries';
 import { ApolloStateProps } from '../index';
 import Error404 from '../404';
-import ImageGallery from '../../components/ImageGallery';
+import ImageGallery, { MakeRequired } from '../../components/ImageGallery';
 import { useMemo } from 'react';
-import { Link as LinkIcon, GitHub, Group } from '@material-ui/icons';
+import { Link as LinkIcon, GitHub, Group } from '@mui/icons-material';
 import MarkdownRenderer from '../../components/MarkdownRenderer';
 import BackLink from '../../components/BackLink';
 
-interface MediaItem {
-    url: string,
-    title: string | null | undefined
-}
-
-const useStyles = makeStyles((theme) => ({
-    gallery: {
-        marginTop: "1rem"
-    },
-    linkButton: {
-        textTransform: "none",
-        paddingLeft: "calc(1rem + 4px)",
-        paddingRight: "1rem"
-    },
-    buttonsContainer: {
-        marginTop: "1rem",
-        "& > *:not(:last-child)": {
-            marginRight: "1rem"
-        }
-    },
-    collaborators: {
-        marginTop: "0.5rem",
-        "& svg": {
-            verticalAlign: "bottom",
-            marginRight: "0.5rem"
-        }
-    }
-}));
+const linkButtonStyles: SxProps = {
+    textTransform: "none",
+    paddingLeft: "calc(1rem + 4px)",
+    paddingRight: "1rem"
+};
 
 const writtenList = (list: string[]) => 
     [...list.slice(0, list.length - 1), "and " + list[list.length - 1]]
     .join(list.length > 2 ? ", " : " ");
 
 export default function Project() {
-    const styles = useStyles();
     const router = useRouter();
 
     if(router.isFallback) {
@@ -71,11 +47,11 @@ export default function Project() {
 
     if(name === undefined) throw new Error("GraphQL Name value is undefined");
 
-    let media: MediaItem[] | undefined = useMemo(() => {
+    const media: MakeRequired<ProjectAssetFragment>[] | undefined = useMemo(() => {
         if(!project.mediaCollection?.items[0]) return undefined;
         return project.mediaCollection.items
             // TypeScript doesn't understand that this filters out null values
-            .filter(item => item !== null && (item.url ?? undefined) !== undefined) as MediaItem[];
+            .filter(item => item && item.url && item.width && item.height) as MakeRequired<ProjectAssetFragment>[];
     }, []);
 
     return (
@@ -89,30 +65,48 @@ export default function Project() {
                 <Typography variant="h4">{project.tagline}</Typography>
             )}
             {project.collaborators && project.collaborators.length > 0 && (
-                <Typography variant="body1" className={styles.collaborators}><Group/>with {writtenList(project.collaborators)}</Typography>
+                <Typography variant="body1" sx={{
+                    marginTop: "0.5rem",
+                    "& svg": {
+                        verticalAlign: "bottom",
+                        marginRight: "0.5rem"
+                    }            
+                }}><Group/>with {writtenList(project.collaborators)}</Typography>
             )}
             {project.skillsCollection?.items[0] && (
-                <div className={styles.buttonsContainer}>
+                <Box sx={{
+                    marginTop: "1rem",
+                    "& > *:not(:last-child)": {
+                        marginRight: "1rem"
+                    }            
+                }}>
                     {project.skillsCollection.items.map(skill => (
                         <Chip key={skill.title} variant="outlined" label={skill.title}/>
                     ))}
-                </div>
+                </Box>
             )}
-            <div className={styles.buttonsContainer}>
+            <Box sx={{
+                marginTop: "1rem",
+                "& > *:not(:last-child)": {
+                    marginRight: "1rem"
+                }
+            }}>
                 {project.url && (
                     <Link href={project.url}>
-                        <Button className={styles.linkButton} startIcon={<LinkIcon/>}>Project website</Button>
+                        <Button sx={linkButtonStyles} startIcon={<LinkIcon/>}>Project website</Button>
                     </Link>
                 )}
                 {project.codeUrl && (
                     <Link href={project.codeUrl}>
-                        <Button className={styles.linkButton} startIcon={<GitHub/>}>Project code</Button>
+                        <Button sx={linkButtonStyles} startIcon={<GitHub/>}>Project code</Button>
                     </Link>
                 )}
-            </div>
+            </Box>
             
             {media && (
-                <ImageGallery className={styles.gallery} srcs={media.map(item => item.url)} />
+                <ImageGallery sx={{
+                    marginTop: "1rem"
+                }} srcs={media} />
             )}
             {project.description && (
                 <MarkdownRenderer text={project.description}/>
@@ -145,10 +139,10 @@ export const getStaticProps: GetStaticProps<ApolloStateProps> = async (context) 
     };
 }
 
-    // if(data.projectCollection ?? undefined === undefined) throw new Error("ProjectNames query returned an undefined projectCollection");
+// if(data.projectCollection ?? undefined === undefined) throw new Error("ProjectNames query returned an undefined projectCollection");
 
-    // if(data.projectCollection === null) throw new Error();
-    // if(data.projectCollection === undefined) throw new Error();
+// if(data.projectCollection === null) throw new Error();
+// if(data.projectCollection === undefined) throw new Error();
 
 export const getStaticPaths: GetStaticPaths = async () => {
     const apolloClient = initializeApollo();

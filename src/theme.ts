@@ -1,12 +1,21 @@
 import 'typeface-jetbrains-mono';
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@mui/material";
 
 // 61rem * 16px
 export const MARGIN_CHANGE_BREAKPOINT = 976;
 
-const theme = createMuiTheme({
+declare module "@mui/material/styles" {
+    interface Palette {
+        white: Palette["primary"]
+    }
+    interface PaletteOptions {
+        white: PaletteOptions["primary"]
+    }
+}
+
+const theme = createTheme({
     palette: {
-        type: 'dark',
+        mode: "dark",
         divider: "#ffffff",
         primary: {
             main: "#1976d2",
@@ -19,6 +28,12 @@ const theme = createMuiTheme({
             light: "#4fb3bf",
             dark: "#005662",
             contrastText: "#ffffff"
+        },
+        background: {
+            paper: "#424242"
+        },
+        white: {
+            main: "#ffffff"
         }
     },
     typography: {
@@ -26,16 +41,43 @@ const theme = createMuiTheme({
         fontSize: 16
     },
     spacing: 10,
-    overrides: {
+    components: {
         MuiButton: {
-            root: {
-                border: "1px solid white"
+            styleOverrides: {
+                root: {
+                    border: "1px solid white",
+                    color: "white"
+                }
+            },
+            defaultProps: {
+                //@ts-expect-error
+                color: "white"
             }
         },
         MuiChip: {
-            root: {
-                border: "1px solid white",
-                borderRadius: 0
+            styleOverrides: {
+                root: {
+                    // border: "1px solid white",
+                    borderRadius: 0
+                }
+            }
+        },
+        MuiLink: {
+            styleOverrides: {
+                root: {
+                    textDecoration: "none",
+                    "&:hover": {
+                        textDecoration: "underline"
+                    },
+                    color: /* theme.palette.primary.light */ "#63a4ff"
+                }
+            }
+        },
+        MuiAccordion: {
+            styleOverrides: {
+                root: {
+                    backgroundImage: "unset"
+                }
             }
         }
     },

@@ -1,50 +1,15 @@
-import { makeStyles, Typography, Link, Divider } from "@material-ui/core"
+import { Typography, Link, Box, SxProps } from "@mui/material";
 
-const useStyles = makeStyles({
-    wrapper: {
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        "& > *": {
-            marginTop: "1rem"
-        },
-        alignItems: "center"
-    },
-    buildId: {
-        fontSize: "0.8rem"
-    },
-    webringWrapper: {
-        display: "flex",
-        justifyContent: "center"
-    },
-    webringAnchor: {
-        fontSize: "24px",
-        color: "rgba(132,146,166,.8)",
-        textDecoration: "none",
-        transition: "color .5s",
-        "&:hover": {
-            color: "#8492a6",
-            textDecoration: "none"
-        }
-    },
-    webringLogo: {
-        backgroundImage: "url(https://assets.hackclub.com/icon-rounded.svg)",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "top left",
-        backgroundSize: "contain",
-        flexShrink: 0,
-        display: "inline-block",
-        width: "36px",
-        height: "36px",
-        margin: "0 4px",
-        verticalAlign: "middle",
-        filter: "grayscale(100%)",
-        transition: "filter .5s",
-        "&:hover": {
-            filter: "initial"
-        }
+const webringAnchorStyles: SxProps = {
+    fontSize: "24px",
+    color: "rgba(132,146,166,.8)",
+    textDecoration: "none",
+    transition: "color .5s",
+    "&:hover": {
+        color: "#8492a6",
+        textDecoration: "none"
     }
-});
+};
 
 export interface WebringMember {
     member: string,
@@ -57,11 +22,17 @@ export interface FooterProps {
 }
 
 export default function Footer({ prevUrl, nextUrl }: FooterProps) {
-    const styles = useStyles();
-
     return (
-        <div className={styles.wrapper}>
-            <Typography className={styles.buildId} color="textSecondary">Build ID: {
+        <Box sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "column",
+            "& > *": {
+                marginTop: "1rem"
+            },
+            alignItems: "center"    
+        }}>
+            <Typography sx={{ fontSize: "0.8rem" }} color="textSecondary">Build ID: {
                 process.env.NEXT_PUBLIC_BUILD_ID ? (
                     <Link href={process.env.NEXT_PUBLIC_GITHUB_URL + "/commit/" + process.env.NEXT_PUBLIC_BUILD_ID}>
                         {process.env.NEXT_PUBLIC_BUILD_ID}
@@ -69,28 +40,50 @@ export default function Footer({ prevUrl, nextUrl }: FooterProps) {
                 ) : "(is dev build)"
             }
             </Typography>
-            <div className={styles.webringWrapper}>
-                <a
+            <Box sx={{
+                display: "flex",
+                justifyContent: "center"
+            }}>
+                <Box
+                    component="a"
                     href={prevUrl}
-                    className={styles.webringAnchor}
                     title="Previous"
+                    sx={webringAnchorStyles}
                 >
                     ‹
-                </a>
-                <a
+                </Box>
+                <Box
+                    component="a"
                     href="https://webring.hackclub.com/"
-                    className={styles.webringLogo}
                     title="Hack Club Webring"
-                ></a>
-                <a
+                    sx={{
+                        backgroundImage: "url(https://assets.hackclub.com/icon-rounded.svg)",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "top left",
+                        backgroundSize: "contain",
+                        flexShrink: 0,
+                        display: "inline-block",
+                        width: "36px",
+                        height: "36px",
+                        margin: "0 4px",
+                        verticalAlign: "middle",
+                        filter: "grayscale(100%)",
+                        transition: "filter .5s",
+                        "&:hover": {
+                            filter: "initial"
+                        }                
+                    }}
+                ></Box>
+                <Box
+                    component="a"
                     href={nextUrl}
-                    className={styles.webringAnchor}
                     title="Next"
+                    sx={webringAnchorStyles}
                 >
                     ›
-                </a>
-            </div>
-        </div>
+                </Box>
+            </Box>
+        </Box>
     );
 }
 

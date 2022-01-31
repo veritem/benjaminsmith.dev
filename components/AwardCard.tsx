@@ -1,28 +1,16 @@
-import { Card, CardContent, CardHeader, Chip, Link, makeStyles, Typography } from "@material-ui/core";
-import { CalendarToday } from "@material-ui/icons";
+import { Card, CardContent, CardHeader, CardProps, Chip, Link, Typography } from "@mui/material";
 import { AwardIndexFragment } from "../src/generated/queries";
+import theme from "../src/theme";
 import CardHeaderWithChip, { DateChip } from "./CardHeaderWithChip";
 import NextMuiLink from "./NextMuiLink";
 
-const useStyles = makeStyles((theme) => ({
-    cardLink: {
-        color: theme.palette.primary.light
-    },
-    linkSeparator: {
-        display: "inline-block"
-    }
-}));
-
 interface AwardCardProps {
     award: AwardIndexFragment,
-    className?: string
 }
 
-export default function AwardCard({ award, className }: AwardCardProps) {
-    const styles = useStyles();
-
+export default function AwardCard({ award, ...cardProps }: AwardCardProps & CardProps) {
     return (
-        <Card variant="outlined" className={className}>
+        <Card variant="outlined" {...cardProps}>
             <CardContent>
                 <CardHeaderWithChip
                     title={award.award}
@@ -38,13 +26,19 @@ export default function AwardCard({ award, className }: AwardCardProps) {
                 />
                 <Typography variant="body1">{award.description}</Typography>
                 {award.submissionUrl && (
-                    <Link className={styles.cardLink} href={award.submissionUrl}>Submission URL</Link>
+                    <Link sx={{
+                        color: theme.palette.primary.light
+                    }} href={award.submissionUrl}>Submission URL</Link>
                 )}
                 {award.submissionUrl && award.submissionProject && (
-                    <Typography className={styles.linkSeparator}>&nbsp;|&nbsp;</Typography>
+                    <Typography sx={{
+                        display: "inline-block"
+                    }}>&nbsp;|&nbsp;</Typography>
                 )}
                 {award.submissionProject && (
-                    <NextMuiLink muiLinkClassName={styles.cardLink} href={"/project/" + encodeURIComponent(award.submissionProject.title)}>View project page</NextMuiLink>
+                    <NextMuiLink sx={{
+                        color: theme.palette.primary.light
+                    }} href={"/project/" + encodeURIComponent(award.submissionProject.title)}>View project page</NextMuiLink>
                 )}
             </CardContent>
         </Card>

@@ -1,39 +1,34 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { Typography, TypographyProps } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import ReactMarkdown from "react-markdown";
-import { Variant } from "@material-ui/core/styles/createTypography";
-
-const useStyles = makeStyles((theme) => ({
-    markdownContainer: {
-        "& a": {
-            color: theme.palette.primary.main,
-            "&:hover": {
-                textDecoration: "underline"
-            }
-        },
-        "& pre": {
-            backgroundColor: theme.palette.background.default,
-            display: "inline-block",
-            padding: "0.5rem",
-            borderRadius: "0.5rem"
-        },
-        "& code": {
-            backgroundColor: theme.palette.background.paper,
-            padding: "0 0.25rem",
-            borderRadius: "0.25rem"
-        }
-    }
-}))
+import theme from "../src/theme";
 
 interface MarkdownRendererProps {
     text: string,
-    variant?: Variant
+    variant?: TypographyProps["variant"]
 }
 
 export default function MarkdownRenderer({ text, variant }: MarkdownRendererProps) {
-    const styles = useStyles();
-
     return (
-        <Typography className={styles.markdownContainer} variant={variant ?? "body1"} component="div">
+        <Typography sx={{
+            "& a": {
+                color: theme.palette.primary.main,
+                "&:hover": {
+                    textDecoration: "underline"
+                }
+            },
+            "& pre": {
+                backgroundColor: theme.palette.background.default,
+                display: "inline-block",
+                padding: "0.5rem",
+                borderRadius: "0.5rem"
+            },
+            "& code": {
+                backgroundColor: theme.palette.background.paper,
+                padding: "0 0.25rem",
+                borderRadius: "0.25rem"
+            }
+        }} variant={variant ?? "body1"} component="div">
             <ReactMarkdown>{text}</ReactMarkdown>
         </Typography>
     );

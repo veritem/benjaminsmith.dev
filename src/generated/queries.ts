@@ -152,8 +152,51 @@ export type Asset = {
 
 
 /** Represents a binary file in a space. An asset can be any file type. */
+export type AssetTitleArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a binary file in a space. An asset can be any file type. */
+export type AssetDescriptionArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a binary file in a space. An asset can be any file type. */
+export type AssetContentTypeArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a binary file in a space. An asset can be any file type. */
+export type AssetFileNameArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a binary file in a space. An asset can be any file type. */
+export type AssetSizeArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a binary file in a space. An asset can be any file type. */
 export type AssetUrlArgs = {
   transform?: Maybe<ImageTransformOptions>;
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a binary file in a space. An asset can be any file type. */
+export type AssetWidthArgs = {
+  locale?: Maybe<Scalars['String']>;
+};
+
+
+/** Represents a binary file in a space. An asset can be any file type. */
+export type AssetHeightArgs = {
+  locale?: Maybe<Scalars['String']>;
 };
 
 
@@ -519,7 +562,8 @@ export enum ImageFormat {
    */
   Png8 = 'PNG8',
   /** WebP image format. */
-  Webp = 'WEBP'
+  Webp = 'WEBP',
+  Avif = 'AVIF'
 }
 
 export enum ImageResizeFocus {
@@ -1779,7 +1823,7 @@ export type ProjectPageFragment = (
     { __typename?: 'AssetCollection' }
     & { items: Array<Maybe<(
       { __typename?: 'Asset' }
-      & Pick<Asset, 'title' | 'url'>
+      & ProjectAssetFragment
     )>> }
   )>, skillsCollection?: Maybe<(
     { __typename?: 'ProjectSkillsCollection' }
@@ -1788,6 +1832,11 @@ export type ProjectPageFragment = (
       & Pick<Skill, 'title'>
     )> }
   )> }
+);
+
+export type ProjectAssetFragment = (
+  { __typename?: 'Asset' }
+  & Pick<Asset, 'title' | 'url' | 'width' | 'height'>
 );
 
 export type ResumeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1872,6 +1921,14 @@ export const NotFeaturedProjectIndexFragmentDoc = gql`
   tagline
 }
     `;
+export const ProjectAssetFragmentDoc = gql`
+    fragment ProjectAsset on Asset {
+  title
+  url(transform: {format: WEBP, width: 1920})
+  width
+  height
+}
+    `;
 export const ProjectPageFragmentDoc = gql`
     fragment ProjectPage on Project {
   title
@@ -1879,8 +1936,7 @@ export const ProjectPageFragmentDoc = gql`
   codeUrl
   mediaCollection {
     items {
-      title
-      url(transform: {format: WEBP, width: 1920})
+      ...ProjectAsset
     }
   }
   tagline
@@ -1892,7 +1948,7 @@ export const ProjectPageFragmentDoc = gql`
   }
   description
 }
-    `;
+    ${ProjectAssetFragmentDoc}`;
 export const AnnouncementsDocument = gql`
     query Announcements {
   setOfAnnouncementsCollection(where: {id: "benjaminsmith.dev"}, limit: 1) {

@@ -1,33 +1,27 @@
 import { FeaturedAnnouncementIndexFragment } from "../src/generated/queries";
-import { makeStyles, Card, CardContent } from "@material-ui/core";
+import { Card, CardContent, CardProps } from "@mui/material";
 import CardHeaderWithChip, { DateChip } from "./CardHeaderWithChip";
 import MarkdownRenderer from "./MarkdownRenderer";
-import { formatAdditionalClassName } from "../src/utils";
-
-const useStyles = makeStyles((theme) => ({
-    card: {
-        "& p": {
-            marginBottom: "0"
-        },
-        "& a": {
-            color: theme.palette.primary.light + " !important"
-        }
-    },
-    cardContent: {
-        paddingBottom: "1rem !important"
-    }
-}));
+import theme from "../src/theme";
 
 interface AnnouncementCardProps {
     announcement: FeaturedAnnouncementIndexFragment,
     className?: string
 }
 
-export function AnnouncementCard({ announcement, className }: AnnouncementCardProps) {
-    const styles = useStyles();
+export function AnnouncementCard({ announcement, ...cardProps }: AnnouncementCardProps & CardProps) {
     return (
-        <Card className={styles.card + formatAdditionalClassName(className)} variant="outlined">
-            <CardContent className={styles.cardContent}>
+        <Card sx={{
+            "& p": {
+                marginBottom: "0"
+            },
+            "& a": {
+                color: theme.palette.primary.light + " !important"
+            }    
+        }} variant="outlined" {...cardProps}>
+            <CardContent sx={{
+                paddingBottom: "1rem !important"
+            }}>
                 <CardHeaderWithChip
                     title={announcement.title ?? "Announcement"}
                     chip={DateChip({date: announcement.date})}

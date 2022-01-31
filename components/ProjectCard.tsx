@@ -1,33 +1,27 @@
-import { Card, CardHeader, makeStyles } from "@material-ui/core";
+import { Card, CardHeader, Box, CardProps } from "@mui/material";
 import { FeaturedProjectIndexFragment } from "../src/generated/queries";
 
-const useStyles = makeStyles((theme) => ({
-    cardMedia: {
-        backgroundColor: "#202020",
-        "& img": {
-            maxWidth: "100%",
-            maxHeight: "18rem",
-            marginLeft: "auto",
-            marginRight: "auto",
-            padding: "1rem"
-        }
-    }
-}));
-
 interface ProjectCardProps {
-    project: FeaturedProjectIndexFragment,
-    className: string | undefined
+    project: FeaturedProjectIndexFragment
 }
 
-export default function ProjectCard({ project, className }: ProjectCardProps) {
-    const styles = useStyles();
+export default function ProjectCard({ project, ...cardProps }: ProjectCardProps & CardProps) {
     return (
-        <Card variant="outlined" className={className}>
+        <Card variant="outlined" {...cardProps}>
             <CardHeader title={project.title} subheader={project.tagline}/>
             {project.mediaCollection?.items[0] && (
-                <div className={styles.cardMedia}>
+                <Box sx={{
+                    backgroundColor: "#202020",
+                    "& img": {
+                        maxWidth: "100%",
+                        maxHeight: "18rem",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        padding: "1rem"
+                    }
+                }}>
                     <img src={project.mediaCollection.items[0].url ?? undefined} title={project.mediaCollection.items[0].title ?? undefined}/>
-                </div>
+                </Box>
             )}
         </Card>
     )

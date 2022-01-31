@@ -1,16 +1,8 @@
-import { Link, makeStyles, Typography } from '@material-ui/core';
+import { Link, Typography } from '@mui/material';
 import Head from 'next/head';
 import NextLink from 'next/link';
 
-const useStyles = makeStyles((theme) => ({
-    githubText: {
-        marginTop: "3rem"
-    }
-}));
-
 export default function Error404() {
-    const styles = useStyles();
-
     return (
         <>
             <Head>
@@ -24,7 +16,9 @@ export default function Error404() {
                     </Link>
                 </Typography>
             </NextLink>
-            <Typography variant="h6" className={styles.githubText}>
+            <Typography variant="h6" sx={{
+                marginTop: "3rem"
+            }}>
                 If you think this shouldn't be happening,&nbsp;
                 <Link href="https://github.com/merlin04/benjaminsmith.dev">file an issue on GitHub.</Link>
             </Typography>

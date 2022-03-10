@@ -1,11 +1,14 @@
 import { ApolloProvider } from '@apollo/client';
-import { CssBaseline, LinearProgress, ThemeProvider, Theme, StyledEngineProvider } from '@mui/material';
+import { CssBaseline, LinearProgress, StyledEngineProvider, ThemeProvider } from '@mui/material';
+import { DefaultSeo } from "next-seo";
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import SEO from "../next-seo.config";
 import { useApollo } from '../src/apolloClient';
 import theme from '../src/theme';
 import '../styles/globals.css';
+
 
 export default function MyApp({ Component, pageProps }: AppProps) {
     const apolloClient = useApollo(pageProps.initialApolloState);
@@ -36,7 +39,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     //     }
     // }, []);
 
-    if(loading) {
+    if (loading) {
         return (
             <LinearProgress />
         );
@@ -46,6 +49,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         <ApolloProvider client={apolloClient}>
             <StyledEngineProvider injectFirst>
                 <ThemeProvider theme={theme}>
+                    <DefaultSeo {...SEO} />
                     <CssBaseline />
                     <Component {...pageProps} />
                 </ThemeProvider>

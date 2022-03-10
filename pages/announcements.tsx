@@ -1,27 +1,35 @@
-import { ApolloStateProps } from ".";
+import { Box, Typography } from "@mui/material";
 import { GetStaticProps } from "next";
-import { initializeApollo } from "../src/apolloClient";
-import { AnnouncementsDocument, useAnnouncementsQuery, NameDocument, useNameQuery } from "../src/generated/queries";
+import { NextSeo } from "next-seo";
 import Head from "next/head";
+import { ApolloStateProps } from ".";
 import { AnnouncementCard } from "../components/AnnouncementCard";
 import BackLink from "../components/BackLink";
-import { Typography, Box } from "@mui/material";
+import { initializeApollo } from "../src/apolloClient";
+import { AnnouncementsDocument, NameDocument, useAnnouncementsQuery, useNameQuery } from "../src/generated/queries";
 
 export default function Announcements(props: ApolloStateProps) {
     const { data } = useAnnouncementsQuery();
     const announcements = data?.setOfAnnouncementsCollection?.items[0];
-    if(announcements === undefined) throw new Error("GraphQL Announcements is undefined");
+    if (announcements === undefined) throw new Error("GraphQL Announcements is undefined");
 
     const { data: nameData } = useNameQuery();
     const name = nameData?.keyValuePairCollection?.items[0].value;
-    if(name === undefined) throw new Error("GraphQL Name value is undefined");
+    if (name === undefined) throw new Error("GraphQL Name value is undefined");
+
+
+    const SEO = {
+        title: "Announcements",
+    }
+
 
     return (
         <>
+            <NextSeo {...SEO} />
             <Head>
                 <title>Announcements | {name}</title>
             </Head>
-            <BackLink/>
+            <BackLink />
             <Typography variant="h2">Announcements</Typography>
             <Box sx={{
                 marginTop: "1rem",
@@ -31,7 +39,7 @@ export default function Announcements(props: ApolloStateProps) {
             }}>
                 {[...(announcements.featuredAnnouncementsCollection?.items ?? []), ...(announcements.notFeaturedAnnouncementsCollection?.items ?? [])]
                     .map(announcement => (
-                        <AnnouncementCard key={announcement.title ?? "" + announcement.information} announcement={announcement}/>
+                        <AnnouncementCard key={announcement.title ?? "" + announcement.information} announcement={announcement} />
                     ))
                 }
             </Box>

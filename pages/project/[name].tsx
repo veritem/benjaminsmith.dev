@@ -1,16 +1,17 @@
+import { GitHub, Group, Link as LinkIcon } from '@mui/icons-material';
 import { Box, Button, Chip, LinearProgress, Link, SxProps, Typography } from '@mui/material';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import { useRouter } from 'next/router';
+import { NextSeo } from 'next-seo';
 import Head from 'next/head';
-import { initializeApollo } from '../../src/apolloClient';
-import { NameDocument, ProjectPageDocument, ProjectPageQuery, ProjectPageQueryVariables, useNameQuery, useProjectPageQuery, ProjectNamesQuery, ProjectNamesQueryVariables, ProjectNamesDocument, ProjectAssetFragment } from '../../src/generated/queries';
-import { ApolloStateProps } from '../index';
-import Error404 from '../404';
-import ImageGallery, { MakeRequired } from '../../components/ImageGallery';
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
-import { Link as LinkIcon, GitHub, Group } from '@mui/icons-material';
-import MarkdownRenderer from '../../components/MarkdownRenderer';
 import BackLink from '../../components/BackLink';
+import ImageGallery, { MakeRequired } from '../../components/ImageGallery';
+import MarkdownRenderer from '../../components/MarkdownRenderer';
+import { initializeApollo } from '../../src/apolloClient';
+import { NameDocument, ProjectAssetFragment, ProjectNamesDocument, ProjectNamesQuery, ProjectNamesQueryVariables, ProjectPageDocument, ProjectPageQuery, ProjectPageQueryVariables, useNameQuery, useProjectPageQuery } from '../../src/generated/queries';
+import Error404 from '../404';
+import { ApolloStateProps } from '../index';
 
 const linkButtonStyles: SxProps = {
     textTransform: "none",
@@ -18,20 +19,20 @@ const linkButtonStyles: SxProps = {
     paddingRight: "1rem"
 };
 
-const writtenList = (list: string[]) => 
+const writtenList = (list: string[]) =>
     [...list.slice(0, list.length - 1), "and " + list[list.length - 1]]
-    .join(list.length > 2 ? ", " : " ");
+        .join(list.length > 2 ? ", " : " ");
 
 export default function Project() {
     const router = useRouter();
 
-    if(router.isFallback) {
+    if (router.isFallback) {
         return <LinearProgress />;
     }
 
     const { name: projectName } = router.query;
-    
-    if(projectName === undefined || Array.isArray(projectName)) return <Error404 />;
+
+    if (projectName === undefined || Array.isArray(projectName)) return <Error404 />;
 
     const { data } = useProjectPageQuery({
         variables: {
@@ -40,26 +41,31 @@ export default function Project() {
     });
     const project = data?.projectCollection?.items[0];
 
-    if(!project) return <Error404 />;
+    if (!project) return <Error404 />;
 
     const { data: nameData } = useNameQuery();
     const name = nameData?.keyValuePairCollection?.items[0].value;
 
-    if(name === undefined) throw new Error("GraphQL Name value is undefined");
+    if (name === undefined) throw new Error("GraphQL Name value is undefined");
 
     const media: MakeRequired<ProjectAssetFragment>[] | undefined = useMemo(() => {
-        if(!project.mediaCollection?.items[0]) return undefined;
+        if (!project.mediaCollection?.items[0]) return undefined;
         return project.mediaCollection.items
             // TypeScript doesn't understand that this filters out null values
             .filter(item => item && item.url && item.width && item.height) as MakeRequired<ProjectAssetFragment>[];
     }, []);
 
+    const SEO = {
+        title: project.title,
+    }
+
     return (
         <>
+            <NextSeo {...SEO} />
             <Head>
                 <title>{project.title} | {name}</title>
             </Head>
-            <BackLink/>
+            <BackLink />
             <Typography variant="h2">{project.title}</Typography>
             {project.tagline && (
                 <Typography variant="h4">{project.tagline}</Typography>
@@ -70,18 +76,18 @@ export default function Project() {
                     "& svg": {
                         verticalAlign: "bottom",
                         marginRight: "0.5rem"
-                    }            
-                }}><Group/>with {writtenList(project.collaborators)}</Typography>
+                    }
+                }}><Group />with {writtenList(project.collaborators)}</Typography>
             )}
             {project.skillsCollection?.items[0] && (
                 <Box sx={{
                     marginTop: "1rem",
                     "& > *:not(:last-child)": {
                         marginRight: "1rem"
-                    }            
+                    }
                 }}>
                     {project.skillsCollection.items.map(skill => (
-                        <Chip key={skill.title} variant="outlined" label={skill.title}/>
+                        <Chip key={skill.title} variant="outlined" label={skill.title} />
                     ))}
                 </Box>
             )}
@@ -93,23 +99,23 @@ export default function Project() {
             }}>
                 {project.url && (
                     <Link href={project.url}>
-                        <Button sx={linkButtonStyles} startIcon={<LinkIcon/>}>Project website</Button>
+                        <Button sx={linkButtonStyles} startIcon={<LinkIcon />}>Project website</Button>
                     </Link>
                 )}
                 {project.codeUrl && (
                     <Link href={project.codeUrl}>
-                        <Button sx={linkButtonStyles} startIcon={<GitHub/>}>Project code</Button>
+                        <Button sx={linkButtonStyles} startIcon={<GitHub />}>Project code</Button>
                     </Link>
                 )}
             </Box>
-            
+
             {media && (
                 <ImageGallery sx={{
                     marginTop: "1rem"
                 }} srcs={media} />
             )}
             {project.description && (
-                <MarkdownRenderer text={project.description}/>
+                <MarkdownRenderer text={project.description} />
             )}
         </>
     )
@@ -118,7 +124,7 @@ export default function Project() {
 export const getStaticProps: GetStaticProps<ApolloStateProps> = async (context) => {
     const apolloClient = initializeApollo();
 
-    if(context.params?.name !== undefined && !Array.isArray(context.params.name)) {
+    if (context.params?.name !== undefined && !Array.isArray(context.params.name)) {
         await apolloClient.query<ProjectPageQuery, ProjectPageQueryVariables>({
             query: ProjectPageDocument,
             variables: {
@@ -150,7 +156,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
         query: ProjectNamesDocument
     });
 
-    if(data.projectCollection === null || data.projectCollection === undefined) {
+    if (data.projectCollection === null || data.projectCollection === undefined) {
         throw new Error("ProjectNames query returned an undefined projectCollection");
     }
 
